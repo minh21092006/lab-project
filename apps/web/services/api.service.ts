@@ -18,6 +18,9 @@ export abstract class APIService {
     this.axiosInstance = create({
       baseURL,
       withCredentials: true,
+      headers: {
+        "ngrok-skip-browser-warning": "true",
+      },
     });
 
     this.setupInterceptors();
@@ -25,6 +28,17 @@ export abstract class APIService {
 
   private setupInterceptors() {
     this.axiosInstance.interceptors.request.use((config) => {
+      try {
+        if (config.headers && typeof (config.headers as any).set === "function") {
+          (config.headers as any).set("ngrok-skip-browser-warning", "true");
+        } else {
+          config.headers = Object.assign({}, config.headers, {
+            "ngrok-skip-browser-warning": "true",
+          }) as any;
+        }
+      } catch (_error) {
+        // Ignore header set error
+      }
       try {
         if (config.url) {
           config.url = normalizeAPIRequestURL(config.url, this.baseURL);

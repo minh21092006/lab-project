@@ -98,11 +98,19 @@ CORS_ALLOW_HEADERS = [*default_headers, "X-API-Key", "ngrok-skip-browser-warning
 CORS_ALLOWED_ORIGIN_REGEXES = [
     r"^https:\/\/.*\.vercel\.app$",
     r"^https:\/\/.*\.trycloudflare\.com$",
+    r"^https:\/\/.*\.ngrok-free\.app$",
+    r"^https:\/\/.*\.ngrok\.app$",
+    r"^https:\/\/.*\.ngrok-free\.dev$",
+    r"^https:\/\/.*\.ngrok\.io$",
 ]
 CSRF_TRUSTED_ORIGINS = [
     *globals().get("CSRF_TRUSTED_ORIGINS", []),
     "https://*.vercel.app",
     "https://*.trycloudflare.com",
+    "https://*.ngrok-free.app",
+    "https://*.ngrok.app",
+    "https://*.ngrok-free.dev",
+    "https://*.ngrok.io",
 ]
 
 
