@@ -21,13 +21,16 @@ def base_host(
     is_app: bool = False,
 ) -> str:
     """Utility function to return host / origin from the request"""
-    # Calculate the base origin from request
     req_meta = getattr(request, "META", {}) if request else {}
     req_origin = req_meta.get("HTTP_ORIGIN") or ""
-    if "vercel.app" in req_origin:
+
+    if req_origin and req_origin.startswith(("http://", "https://")):
         base_origin = req_origin.rstrip("/")
+    elif request and hasattr(request, "get_host") and request.get_host():
+        scheme = "https" if (hasattr(request, "is_secure") and request.is_secure()) else getattr(request, "scheme", "http")
+        base_origin = f"{scheme}://{request.get_host()}".rstrip("/")
     else:
-        base_origin = settings.WEB_URL or settings.APP_BASE_URL
+        base_origin = (settings.WEB_URL or settings.APP_BASE_URL or "http://localhost").rstrip("/")
 
     if not base_origin:
         raise ImproperlyConfigured("APP_BASE_URL or WEB_URL is not set")
@@ -42,7 +45,7 @@ def base_host(
         if not admin_base_path.endswith("/"):
             admin_base_path += "/"
 
-        if settings.ADMIN_BASE_URL:
+        if settings.ADMIN_BASE_URL and settings.ADMIN_BASE_URL != "http://localhost":
             return settings.ADMIN_BASE_URL + admin_base_path
         else:
             return base_origin + admin_base_path
@@ -57,22 +60,12 @@ def base_host(
         if not space_base_path.endswith("/"):
             space_base_path += "/"
 
-        if settings.SPACE_BASE_URL:
+        if settings.SPACE_BASE_URL and settings.SPACE_BASE_URL != "http://localhost":
             return settings.SPACE_BASE_URL + space_base_path
         else:
             return base_origin + space_base_path
 
     # App Redirection
-    if is_app:
-        req_meta = getattr(request, "META", {}) if request else {}
-        req_origin = req_meta.get("HTTP_ORIGIN") or ""
-        if "vercel.app" in req_origin:
-            return req_origin.rstrip("/")
-        if settings.APP_BASE_URL:
-            return settings.APP_BASE_URL
-        else:
-            return base_origin
-
     return base_origin
 
 

@@ -1,22 +1,14 @@
 services:
   web:
     container_name: web
-    build:
-      context: .
-      dockerfile: ./apps/web/Dockerfile.web
-      args:
-        DOCKER_BUILDKIT: 1
+    image: makeplane/plane-frontend:v1.4.2
     restart: always
     depends_on:
       - api
 
   admin:
     container_name: admin
-    build:
-      context: .
-      dockerfile: ./apps/admin/Dockerfile.admin
-      args:
-        DOCKER_BUILDKIT: 1
+    image: makeplane/plane-admin:v1.4.2
     restart: always
     depends_on:
       - api
@@ -24,11 +16,7 @@ services:
 
   space:
     container_name: space
-    build:
-      context: .
-      dockerfile: ./apps/space/Dockerfile.space
-      args:
-        DOCKER_BUILDKIT: 1
+    image: makeplane/plane-space:v1.4.2
     restart: always
     depends_on:
       - api
@@ -36,13 +24,17 @@ services:
 
   api:
     container_name: api
+    ports:
+      - "8000:8000"
     build:
       context: ./apps/api
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
     restart: always
-    command: ./bin/docker-entrypoint-api.sh
+    volumes:
+      - ./apps/api:/code
+    command: ./bin/docker-entrypoint-api-local.sh
     env_file:
       - ./apps/api/.env
     depends_on:
@@ -53,10 +45,12 @@ services:
     container_name: bgworker
     build:
       context: ./apps/api
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
     restart: always
+    volumes:
+      - ./apps/api:/code
     command: ./bin/docker-entrypoint-worker.sh
     env_file:
       - ./apps/api/.env
@@ -69,10 +63,12 @@ services:
     container_name: beatworker
     build:
       context: ./apps/api
-      dockerfile: Dockerfile.api
+      dockerfile: Dockerfile.dev
       args:
         DOCKER_BUILDKIT: 1
     restart: always
+    volumes:
+      - ./apps/api:/code
     command: ./bin/docker-entrypoint-beat.sh
     env_file:
       - ./apps/api/.env
@@ -98,17 +94,21 @@ services:
 
   live:
     container_name: plane-live
-    build:
-      context: .
-      dockerfile: ./apps/live/Dockerfile.live
-      args:
-        DOCKER_BUILDKIT: 1
+    image: makeplane/plane-live:v1.4.2
     restart: always
+    ports:
+      - "3100:3000"
+    environment:
+      API_BASE_URL: http://api:8000
+      LIVE_SERVER_SECRET_KEY: ${LIVE_SERVER_SECRET_KEY:-secret-key}
+      REDIS_URL: redis://plane-redis:6379/
 
   plane-db:
     container_name: plane-db
     image: postgres:15.7-alpine
     restart: always
+    ports:
+      - "5432:5432"
     command: postgres -c 'max_connections=1000'
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -124,6 +124,8 @@ services:
     container_name: plane-redis
     image: valkey/valkey:7.2.11-alpine
     restart: always
+    ports:
+      - "6379:6379"
     volumes:
       - redisdata:/data
 
@@ -131,6 +133,9 @@ services:
     container_name: plane-mq
     image: rabbitmq:3.13.6-management-alpine
     restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
     env_file:
       - .env
     environment:
@@ -145,18 +150,20 @@ services:
     image: docker.io/pgsty/minio:RELEASE.2026-08-04T00-00-00Z
     restart: always
     command: server /export --console-address ":9090"
+    ports:
+      - "9000:9000"
+      - "9090:9090"
     volumes:
       - uploads:/export
     environment:
       MINIO_ROOT_USER: ${AWS_ACCESS_KEY_ID}
       MINIO_ROOT_PASSWORD: ${AWS_SECRET_ACCESS_KEY}
+      MINIO_API_CORS_ALLOW_ORIGIN: "*"
 
   # Comment this if you already have a reverse proxy running
   proxy:
     container_name: proxy
-    build:
-      context: ./apps/proxy
-      dockerfile: Dockerfile.ce
+    image: makeplane/plane-proxy:v1.4.2
     restart: always
     ports:
       - ${LISTEN_HTTP_PORT}:80
@@ -164,6 +171,7 @@ services:
     environment:
       FILE_SIZE_LIMIT: ${FILE_SIZE_LIMIT:-5242880}
       BUCKET_NAME: ${AWS_S3_BUCKET_NAME:-uploads}
+      SITE_ADDRESS: :80
     depends_on:
       - web
       - api
