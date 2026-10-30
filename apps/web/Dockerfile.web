@@ -18,6 +18,9 @@ ARG TURBO_VERSION=2.10.11
 RUN corepack enable pnpm && pnpm add -g turbo@${TURBO_VERSION}
 COPY . .
 
+# Fix symlink on Windows hosts (Git on Windows checks out symlinks as plain text files)
+RUN rm -rf packages/i18n/locales && ln -s src/locales packages/i18n/locales
+
 RUN turbo prune --scope=web --docker
 
 # *****************************************************************************
@@ -38,6 +41,9 @@ RUN corepack enable pnpm
 # Copy full directory structure before fetch to ensure all package.json files are available
 COPY --from=builder /app/out/full/ .
 COPY turbo.json turbo.json
+
+# Fix symlink on Windows hosts (Git on Windows checks out symlinks as plain text files)
+RUN rm -rf packages/i18n/locales && ln -s src/locales packages/i18n/locales
 
 # Fetch dependencies to cache store, then install offline with dev deps
 RUN --mount=type=cache,id=pnpm-store,target=/pnpm/store pnpm fetch --store-dir=/pnpm/store
