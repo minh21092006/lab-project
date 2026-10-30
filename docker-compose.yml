@@ -1,7 +1,11 @@
 services:
   web:
     container_name: web
-    image: makeplane/plane-frontend:v1.4.2
+    build:
+      context: .
+      dockerfile: ./apps/web/Dockerfile.web
+      args:
+        DOCKER_BUILDKIT: 1
     restart: always
     depends_on:
       - api
