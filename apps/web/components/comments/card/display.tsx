@@ -117,7 +117,7 @@ export const CommentCardDisplay = observer(function CommentCardDisplay(props: TC
           )}
         </div>
       )}
-      <div className="relative mb-3 flex w-full items-center gap-2">
+      <div className="relative mb-1.5 flex w-full items-center gap-2">
         <Avatar alt={displayName} fallback={displayName?.[0]?.toUpperCase()} size="2xs" src={getFileURL(avatarUrl)} />
         <div className="flex flex-1 flex-wrap items-center gap-1">
           <div className="text-caption-sm-medium">{displayName}</div>
@@ -167,10 +167,16 @@ export const CommentCardDisplay = observer(function CommentCardDisplay(props: TC
             editable={false}
             ref={readOnlyEditorRef}
             id={comment.id}
-            initialValue={comment.comment_html ?? ""}
+            initialValue={
+              (comment.comment_html ?? "")
+                .replace(/(?:<p[^>]*>\s*(?:<br[^>]*>\s*)?<\/p>\s*)+$/gi, "")
+                .replace(/^(?:\s*<p[^>]*>\s*(?:<br[^>]*>\s*)?<\/p>)+/gi, "") ||
+              comment.comment_html ||
+              ""
+            }
             workspaceId={workspaceId}
             workspaceSlug={workspaceSlug}
-            containerClassName={cn("!py-1 transition-[border-color] duration-500", highlightClassName)}
+            containerClassName={cn("p-0 transition-[border-color] duration-500", highlightClassName)}
             projectId={projectId?.toString()}
             displayConfig={{
               fontSize: "small-font",

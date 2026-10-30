@@ -75,6 +75,7 @@ CUSTOM_TAGS = {
     "label",
     "input",
     "image-component",
+    "attachment-component",
 }
 ALLOWED_TAGS = nh3.ALLOWED_TAGS | CUSTOM_TAGS
 
@@ -113,6 +114,14 @@ ATTRIBUTES = {
     },
     "a": {"href", "target"},
     # editor node/tag attributes
+    "attachment-component": {
+        "id",
+        "src",
+        "name",
+        "size",
+        "type",
+        "status",
+    },
     "image-component": {
         "id",
         "width",

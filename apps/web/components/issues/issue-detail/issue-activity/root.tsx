@@ -49,7 +49,11 @@ export const IssueActivity = observer(function IssueActivity(props: TIssueActivi
     "issue_activity_filters",
     defaultActivityFilters
   );
-  const { setValue: setSortOrder, storedValue: sortOrder } = useLocalStorage("activity_sort_order", E_SORT_ORDER.ASC);
+  const { setValue: setSortOrder, storedValue: sortOrder } = useLocalStorage(
+    "issue_activity_sort_order",
+    E_SORT_ORDER.DESC
+  );
+  const currentSortOrder = sortOrder || E_SORT_ORDER.DESC;
 
   const { getProjectById } = useProject();
 
@@ -68,7 +72,7 @@ export const IssueActivity = observer(function IssueActivity(props: TIssueActivi
   };
 
   const toggleSortOrder = () => {
-    setSortOrder(sortOrder === E_SORT_ORDER.ASC ? E_SORT_ORDER.DESC : E_SORT_ORDER.ASC);
+    setSortOrder(currentSortOrder === E_SORT_ORDER.ASC ? E_SORT_ORDER.DESC : E_SORT_ORDER.ASC);
   };
 
   // helper hooks
@@ -95,7 +99,7 @@ export const IssueActivity = observer(function IssueActivity(props: TIssueActivi
       <div className="flex items-center justify-between">
         <div className="text-h5-medium text-primary">{t("common.activity")}</div>
         <div className="flex items-center gap-2">
-          <ActivitySortRoot sortOrder={sortOrder || E_SORT_ORDER.ASC} toggleSort={toggleSortOrder} />
+          <ActivitySortRoot sortOrder={currentSortOrder} toggleSort={toggleSortOrder} />
           <ActivityFilterRoot
             selectedFilters={selectedFilters || defaultActivityFilters}
             toggleFilter={toggleFilter}
@@ -109,7 +113,7 @@ export const IssueActivity = observer(function IssueActivity(props: TIssueActivi
       <div className="space-y-3">
         <div className="min-h-[200px]">
           <div className="space-y-3">
-            {!disabled && sortOrder === E_SORT_ORDER.DESC && renderCommentCreationBox}
+            {!disabled && renderCommentCreationBox}
             <IssueActivityCommentRoot
               projectId={projectId}
               workspaceSlug={workspaceSlug}
@@ -119,9 +123,8 @@ export const IssueActivity = observer(function IssueActivity(props: TIssueActivi
               activityOperations={activityOperations}
               showAccessSpecifier={!!project.anchor}
               disabled={disabled}
-              sortOrder={sortOrder || E_SORT_ORDER.ASC}
+              sortOrder={currentSortOrder}
             />
-            {!disabled && sortOrder === E_SORT_ORDER.ASC && renderCommentCreationBox}
           </div>
         </div>
       </div>

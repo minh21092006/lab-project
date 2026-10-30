@@ -364,17 +364,21 @@ class WorkspaceFileAssetEndpoint(BaseAPIView):
                 )
 
         # Check if the file type is allowed
-        allowed_types = [
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-            "image/jpg",
-            "image/gif",
-        ]
+        allowed_types = (
+            settings.ATTACHMENT_MIME_TYPES
+            if entity_type == FileAsset.EntityTypeContext.COMMENT_DESCRIPTION
+            else [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "image/jpg",
+                "image/gif",
+            ]
+        )
         if type not in allowed_types:
             return Response(
                 {
-                    "error": "Invalid file type. Only JPEG, PNG, WebP, JPG and GIF files are allowed.",
+                    "error": "Invalid file type.",
                     "status": False,
                 },
                 status=status.HTTP_400_BAD_REQUEST,
@@ -593,17 +597,21 @@ class ProjectAssetEndpoint(BaseAPIView):
             )
 
         # Check if the file type is allowed
-        allowed_types = [
-            "image/jpeg",
-            "image/png",
-            "image/webp",
-            "image/jpg",
-            "image/gif",
-        ]
+        allowed_types = (
+            settings.ATTACHMENT_MIME_TYPES
+            if entity_type == FileAsset.EntityTypeContext.COMMENT_DESCRIPTION
+            else [
+                "image/jpeg",
+                "image/png",
+                "image/webp",
+                "image/jpg",
+                "image/gif",
+            ]
+        )
         if type not in allowed_types:
             return Response(
                 {
-                    "error": "Invalid file type. Only JPEG, PNG, WebP, JPG and GIF files are allowed.",
+                    "error": "Invalid file type.",
                     "status": False,
                 },
                 status=status.HTTP_400_BAD_REQUEST,

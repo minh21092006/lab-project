@@ -56,6 +56,10 @@ type LiteTextEditorWrapperProps = MakeOptional<
       }
   );
 
+function isMutableRefObject<T>(targetRef: React.ForwardedRef<T>): targetRef is React.MutableRefObject<T | null> {
+  return !!targetRef && typeof targetRef === "object" && "current" in targetRef;
+}
+
 export const LiteTextEditor = React.forwardRef(function LiteTextEditor(
   props: LiteTextEditorWrapperProps,
   ref: React.ForwardedRef<EditorRefApi>
@@ -111,9 +115,6 @@ export const LiteTextEditor = React.forwardRef(function LiteTextEditor(
   });
   // editor config
   const { getEditorFileHandlers } = useEditorConfig();
-  function isMutableRefObject<T>(ref: React.ForwardedRef<T>): ref is React.MutableRefObject<T | null> {
-    return !!ref && typeof ref === "object" && "current" in ref;
-  }
   // derived values
   const isEmpty = isCommentEmpty(props.initialValue);
 
@@ -164,9 +165,13 @@ export const LiteTextEditor = React.forwardRef(function LiteTextEditor(
             }}
             placeholder={placeholder}
             showPlaceholderOnEmpty={showPlaceholderOnEmpty}
-            containerClassName={cn(containerClassName, "relative", {
-              "p-2": !editable,
-            })}
+            containerClassName={cn(
+              "relative",
+              {
+                "p-2": !editable,
+              },
+              containerClassName
+            )}
             extendedEditorProps={{}}
             editorClassName={editorClassName}
             {...rest}

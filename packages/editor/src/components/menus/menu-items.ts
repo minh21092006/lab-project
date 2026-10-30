@@ -30,10 +30,13 @@ import {
   UnderlineOutline,
 } from "@makeplane/propel/icons";
 import type { ComponentType, SVGProps } from "react";
+import { Paperclip } from "lucide-react";
 // constants
+import { ACCEPTED_ATTACHMENT_MIME_TYPES } from "@/constants/config";
 import { CORE_EXTENSIONS } from "@/constants/extension";
 // helpers
 import {
+  insertAttachment,
   insertHorizontalRule,
   insertImage,
   insertTableCommand,
@@ -197,6 +200,32 @@ export const ImageItem = (editor: Editor): EditorMenuItem<"image"> => ({
   icon: ImageOutline,
 });
 
+export const AttachmentItem = (editor: Editor): EditorMenuItem<"attachment"> => ({
+  key: "attachment",
+  name: "Attachment",
+  isActive: () => editor?.isActive(CORE_EXTENSIONS.CUSTOM_ATTACHMENT),
+  command: () => {
+    if (typeof document === "undefined") return;
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ACCEPTED_ATTACHMENT_MIME_TYPES.join(",");
+    input.addEventListener("change", (e) => {
+      const target = e.target as HTMLInputElement;
+      const file = target.files?.[0];
+      if (file) {
+        insertAttachment({
+          editor,
+          event: "insert",
+          file,
+          pos: editor.state.selection.from,
+        });
+      }
+    });
+    input.click();
+  },
+  icon: Paperclip,
+});
+
 export const HorizontalRuleItem = (editor: Editor): EditorMenuItem<"divider"> =>
   ({
     key: "divider",
@@ -276,6 +305,7 @@ export const getEditorMenuItems = (editor: Editor | null): EditorMenuItem<TEdito
     QuoteItem(editor),
     TableItem(editor),
     ImageItem(editor),
+    AttachmentItem(editor),
     HorizontalRuleItem(editor),
     LinkItem(editor),
     TextColorItem(editor),

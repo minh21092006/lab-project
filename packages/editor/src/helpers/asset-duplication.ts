@@ -43,4 +43,5 @@ const imageComponentHandler: AssetDuplicationHandler = ({ element, originalHtml 
 
 export const assetDuplicationHandlers: Record<string, AssetDuplicationHandler> = {
   "image-component": imageComponentHandler,
+  "attachment-component": imageComponentHandler,
 };

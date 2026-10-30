@@ -9,6 +9,7 @@ import type { Editor, Range } from "@tiptap/core";
 import { CORE_EXTENSIONS } from "@/constants/extension";
 // extensions
 import { replaceCodeWithText } from "@/extensions/code/utils/replace-code-block-with-text";
+import type { InsertAttachmentComponentProps } from "@/extensions/custom-attachment/types";
 import type { InsertImageComponentProps } from "@/extensions/custom-image/types";
 // helpers
 import type { ExtendedEmojiStorage } from "@/extensions/emoji/emoji";
@@ -98,8 +99,8 @@ export const insertTableCommand = (editor: Editor, range?: Range) => {
     const selection = window.getSelection();
     if (selection) {
       if (selection.rangeCount !== 0) {
-        const range = selection.getRangeAt(0);
-        if (findTableAncestor(range.startContainer)) {
+        const selectionRange = selection.getRangeAt(0);
+        if (findTableAncestor(selectionRange.startContainer)) {
           return;
         }
       }
@@ -128,6 +129,27 @@ export const insertImage = ({
   if (pos) imageOptions.pos = pos;
   if (file) imageOptions.file = file;
   return editor?.chain().focus().insertImageComponent(imageOptions).run();
+};
+
+export const insertAttachment = ({
+  editor,
+  event,
+  pos,
+  file,
+  range,
+}: {
+  editor: Editor;
+  event: "insert" | "drop";
+  pos?: number | null;
+  file?: File;
+  range?: Range;
+}) => {
+  if (range) editor.chain().focus().deleteRange(range).run();
+
+  const attachmentOptions: InsertAttachmentComponentProps = { event };
+  if (pos) attachmentOptions.pos = pos;
+  if (file) attachmentOptions.file = file;
+  return editor?.chain().focus().insertAttachmentComponent(attachmentOptions).run();
 };
 
 export const unsetLinkEditor = (editor: Editor) => {

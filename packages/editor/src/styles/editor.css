@@ -506,3 +506,19 @@ span[data-name][data-type="emoji"] img {
   user-select: none;
   -webkit-user-select: none;
 }
+
+/* attachment component styles */
+.attachment-component-wrapper p {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+/* Hide trailing or leading empty paragraph in read-only editors when other blocks exist */
+.ProseMirror[contenteditable="false"]
+  p.editor-paragraph-block:last-child:not(:first-child):has(> br.ProseMirror-trailingBreak:only-child),
+.ProseMirror[contenteditable="false"] p.editor-paragraph-block:last-child:not(:first-child):empty,
+.ProseMirror[contenteditable="false"]
+  p.editor-paragraph-block:first-child:not(:last-child):has(> br.ProseMirror-trailingBreak:only-child),
+.ProseMirror[contenteditable="false"] p.editor-paragraph-block:first-child:not(:last-child):empty {
+  display: none !important;
+}

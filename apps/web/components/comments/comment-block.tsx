@@ -42,7 +42,7 @@ export const CommentBlock = observer(function CommentBlock(props: TCommentBlock)
         <ReplyOutline width={14} height={14} className="text-secondary" aria-hidden="true" />
       </div>
       <div className="flex flex-grow flex-col gap-3 truncate">
-        <div className="mb-2 rounded-lg border border-subtle bg-layer-2 p-3 text-body-sm-regular shadow-raised-100">
+        <div className="mb-2 rounded-lg border border-subtle bg-layer-2 px-3 py-2 text-body-sm-regular shadow-raised-100">
           {children}
         </div>
       </div>

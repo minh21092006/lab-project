@@ -41,6 +41,10 @@ export const TrailingNode = Extension.create<TrailingNodeOptions>({
       new Plugin({
         key: plugin,
         appendTransaction: (_, __, state) => {
+          if (!this.editor.isEditable) {
+            return;
+          }
+
           const { doc, tr, schema } = state;
           const shouldInsertNodeAtEnd = plugin.getState(state);
           const endPosition = doc.content.size;
