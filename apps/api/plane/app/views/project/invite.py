@@ -34,6 +34,7 @@ from plane.db.models import (
     ProjectUserProperty,
 )
 from plane.db.models.project import ProjectNetwork
+from plane.bgtasks.project_invitation_task import project_invitation
 from plane.utils.host import base_host
 
 
@@ -105,7 +106,7 @@ class ProjectInvitationsViewset(BaseViewSet):
 
         # Send invitations
         for invitation in project_invitations:
-            project_invitations.delay(
+            project_invitation.delay(
                 invitation.email,
                 project_id,
                 invitation.token,
