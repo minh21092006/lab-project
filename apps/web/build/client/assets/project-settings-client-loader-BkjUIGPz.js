@@ -1,0 +1,1 @@
+import{E as e}from"./utils-BR5Vd7sD.js";var t=({params:t})=>{let{workspaceSlug:n,projectId:r}=t,i=t[`*`]||``;throw e(`/${n}/settings/projects/${r}${i?`/${i}`:``}/`)};export{t as clientLoader};

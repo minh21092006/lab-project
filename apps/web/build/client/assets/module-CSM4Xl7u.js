@@ -1,0 +1,1 @@
+var e={label:`{count, plural, one {モジュール} other {モジュール}}`,no_module:`モジュールなし`,select:`モジュールを追加`},t={module:e};export{t as default,e as module};

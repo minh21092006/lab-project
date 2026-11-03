@@ -1,0 +1,1 @@
+var e=`/assets/maintenance-mode-dark-BBA-LJLg.svg`,t=`/assets/maintenance-mode-light-CFBw_VDC.svg`;export{e as n,t};

@@ -6,7 +6,10 @@
 
 // plane imports
 import type { SyntheticEvent } from "react";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { ConfirmDialog } from "@plane/blocks/dialog";
+import { setToast } from "@plane/blocks/toast";
+import { useMember } from "@/hooks/store/use-member";
 import { observer } from "mobx-react";
 import { useTranslation } from "@plane/i18n";
 import { DueDateOutline, StartDateOutline } from "@makeplane/propel/icons";
@@ -45,6 +48,61 @@ export const SubIssuesListItemProperties = observer(function SubIssuesListItemPr
   const { t } = useTranslation();
   const { getStateById } = useProjectState();
   const { data: userProfile } = useUserProfile();
+  const { getUserDetails } = useMember();
+  const [pendingAssigneeAction, setPendingAssigneeAction] = useState<{
+    ids: string[];
+    type: "add" | "remove";
+    memberNames: string;
+  } | null>(null);
+
+  const handleAssigneeChange = (val: string[]) => {
+    const current = issue?.assignee_ids ?? [];
+    const added = val.filter((id) => !current.includes(id));
+    const removed = current.filter((id) => !val.includes(id));
+
+    if (added.length > 0) {
+      const names = added
+        .map((id) => getUserDetails(id)?.display_name || "member")
+        .join(", ");
+      setPendingAssigneeAction({ ids: val, type: "add", memberNames: names });
+    } else if (removed.length > 0) {
+      const names = removed
+        .map((id) => getUserDetails(id)?.display_name || "member")
+        .join(", ");
+      setPendingAssigneeAction({ ids: val, type: "remove", memberNames: names });
+    }
+  };
+
+  const handleConfirmAssignment = async () => {
+    if (!pendingAssigneeAction || !issue.project_id) return;
+    const { ids, type, memberNames } = pendingAssigneeAction;
+    try {
+      await updateSubIssue(workspaceSlug, issue.project_id, parentIssueId, issueId, {
+        assignee_ids: ids,
+      });
+      if (type === "add") {
+        setToast({
+          type: "success",
+          title: "Assignee added",
+          message: `Assigned ${memberNames} and notification sent.`,
+        });
+      } else {
+        setToast({
+          type: "success",
+          title: "Assignee removed",
+          message: `Removed ${memberNames} from work item.`,
+        });
+      }
+    } catch {
+      setToast({
+        type: "error",
+        title: "Error",
+        message: `Failed to ${type === "add" ? "assign" : "remove"} assignee. Please try again.`,
+      });
+    } finally {
+      setPendingAssigneeAction(null);
+    }
+  };
 
   const handleEventPropagation = (e: SyntheticEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -93,7 +151,45 @@ export const SubIssuesListItemProperties = observer(function SubIssuesListItemPr
   const minDate = getDate(issue.start_date);
 
   return (
-    <div className="relative flex items-center gap-2">
+    <>
+      <div onClick={handleEventPropagation} onKeyDown={(e) => e.stopPropagation()}>
+        <ConfirmDialog
+          isOpen={Boolean(pendingAssigneeAction)}
+          handleClose={() => setPendingAssigneeAction(null)}
+          handleSubmit={handleConfirmAssignment}
+          variant={pendingAssigneeAction?.type === "remove" ? "danger" : "primary"}
+          title={
+            pendingAssigneeAction?.type === "remove"
+              ? "Confirm Remove Assignee"
+              : "Confirm Work Item Assignment"
+          }
+          content={
+            <div className="space-y-2 text-13 text-secondary">
+              <p>
+                Are you sure you want to{" "}
+                {pendingAssigneeAction?.type === "remove" ? "remove " : "assign "}
+                <strong className="text-primary font-semibold">
+                  {pendingAssigneeAction?.memberNames}
+                </strong>{" "}
+                {pendingAssigneeAction?.type === "remove" ? "from" : "to"} work item{" "}
+                <span className="font-semibold text-primary">{issue.name}</span>?
+              </p>
+              {pendingAssigneeAction?.type === "add" && (
+                <p className="text-12 text-tertiary">
+                  An email notification will be delivered to their registered email address.
+                </p>
+              )}
+            </div>
+          }
+          primaryButtonText={
+            pendingAssigneeAction?.type === "remove"
+              ? { loading: "Removing...", default: "Remove Assignee" }
+              : { loading: "Assigning...", default: "Assign & Notify" }
+          }
+          secondaryButtonText="Cancel"
+        />
+      </div>
+      <div className="relative flex items-center gap-2">
       <WithDisplayPropertiesHOC displayProperties={displayProperties} displayPropertyKey="state">
         <StateSelect
           value={issue.state_id}
@@ -211,12 +307,7 @@ export const SubIssuesListItemProperties = observer(function SubIssuesListItemPr
         <MemberSelect
           value={issue.assignee_ids ?? []}
           projectId={issue.project_id ?? undefined}
-          onChange={(val) =>
-            issue.project_id &&
-            updateSubIssue(workspaceSlug, issue.project_id, parentIssueId, issueId, {
-              assignee_ids: val,
-            })
-          }
+          onChange={handleAssigneeChange}
           disabled={!canEdit}
           multiple
           variant={issue.assignee_ids?.length ? "avatar-group-sm" : "pill-sm"}
@@ -224,5 +315,6 @@ export const SubIssuesListItemProperties = observer(function SubIssuesListItemPr
         />
       </WithDisplayPropertiesHOC>
     </div>
+    </>
   );
 });

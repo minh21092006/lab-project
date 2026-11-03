@@ -1,0 +1,1 @@
+import{B as e,K as t}from"./utils-BR5Vd7sD.js";import{t as n}from"./jsx-runtime-BBkQMlCM.js";import{tt as r,z as i}from"./select-CWR4m5fR-C9SsIULI.js";var a=t(e(),1),o=n();function s({ref:e,...t}){let n=a.useContext(i),s=a.useCallback(t=>{n&&(n.current=t),typeof e==`function`?e(t):e&&(e.current=t)},[n,e]);return(0,o.jsx)(r,{...t,ref:s})}export{s as t};

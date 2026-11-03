@@ -18,6 +18,7 @@ import type { IWorkspace } from "@plane/types";
 // ui
 import { Select } from "@plane/blocks/select";
 import { validateWorkspaceName, validateSlug } from "@plane/utils";
+import { getWorkspaceDisplayHost } from "@/helpers/workspace.helper";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useAppRouter } from "@/hooks/use-app-router";
@@ -119,7 +120,7 @@ export const CreateWorkspaceForm = observer(function CreateWorkspaceForm(props: 
     >
       <div className="space-y-6 sm:space-y-7">
         <div className="flex flex-col gap-2 text-13">
-          <label htmlFor="workspaceName">
+          <label htmlFor="workspaceName" className="text-13 font-medium text-primary">
             {t("workspace_creation.form.name.label")}
             <span className="ml-0.5 text-danger-primary">*</span>
           </label>
@@ -161,7 +162,7 @@ export const CreateWorkspaceForm = observer(function CreateWorkspaceForm(props: 
           </div>
         </div>
         <div className="flex flex-col gap-2 text-13">
-          <label htmlFor="workspaceUrl">
+          <label htmlFor="workspaceUrl" className="text-13 font-medium text-primary">
             {t("workspace_creation.form.url.label")}
             <span className="ml-0.5 text-danger-primary">*</span>
           </label>
@@ -177,12 +178,13 @@ export const CreateWorkspaceForm = observer(function CreateWorkspaceForm(props: 
             }}
             render={({ field: { onChange, value, ref } }) => (
               <Field name="workspaceUrl" invalid={invalidSlug || Boolean(errors.slug)}>
-                <InputGroup size="2xl">
-                  <span className="text-12 whitespace-nowrap text-secondary">{window && window.location.host}/</span>
+                <InputGroup size="2xl" className="!gap-0">
+                  <span className="text-13 whitespace-nowrap text-tertiary select-none">{getWorkspaceDisplayHost()}/</span>
                   <Input
                     size="2xl"
                     id="workspaceUrl"
                     type="text"
+                    className="!pl-0.5"
                     value={value.toLocaleLowerCase().trim().replace(/ /g, "-")}
                     onChange={(e) => {
                       const validation = validateSlug(e.target.value);
@@ -208,7 +210,7 @@ export const CreateWorkspaceForm = observer(function CreateWorkspaceForm(props: 
           {errors.slug && <span className="text-11 text-danger-primary">{errors.slug.message}</span>}
         </div>
         <div className="flex flex-col gap-2 text-13">
-          <span>
+          <span className="text-13 font-medium text-primary">
             {t("workspace_creation.form.organization_size.label")}
             <span className="ml-0.5 text-danger-primary">*</span>
           </span>

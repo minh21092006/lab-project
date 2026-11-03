@@ -1,0 +1,1 @@
+import{B as e,K as t}from"./utils-BR5Vd7sD.js";var n=t(e(),1);function r({controlled:e,default:t,name:r,state:i=`value`}){let{current:a}=n.useRef(e!==void 0),[o,s]=n.useState(t);return[a?e:o,n.useCallback(e=>{a||s(e)},[])]}export{r as t};

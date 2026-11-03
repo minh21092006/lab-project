@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Voeg werkitems toe aan de cyclus om de voortgang te bekijken`},chart:{title:`Voeg werkitems toe aan de cyclus om de burndown-grafiek te bekijken.`},priority_issue:{title:`Bekijk in een oogopslag welke werkitems met hoge prioriteit in de cyclus worden opgepakt.`},assignee:{title:`Wijs werkitems toe aan toegewezenen om het werk per toegewezene uitgesplitst te zien.`},label:{title:`Voeg labels toe aan werkitems om het werk per label uitgesplitst te zien.`}}},t={label:`{count, plural, one {Cyclus} other {Cycli}}`,no_cycle:`Geen cyclus`},n={empty_state:{progress:{title:`Voeg werkitems toe aan de cyclus om de
+voortgang te bekijken`},priority:{title:`Bekijk in een oogopslag welke werkitems met hoge prioriteit in
+de cyclus worden opgepakt.`},assignee:{title:`Wijs werkitems toe aan toegewezenen om het werk per
+toegewezene uitgesplitst te zien.`},label:{title:`Voeg labels toe aan werkitems om het werk per
+label uitgesplitst te zien.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

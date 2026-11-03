@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{i as t,t as n}from"./Input-D7Eb_ZqG.js";var r=e();function i({size:e,...i}){return(0,r.jsx)(n,{...i,render:(0,r.jsx)(t,{size:e})})}export{i as t};

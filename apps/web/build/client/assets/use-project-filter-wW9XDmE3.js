@@ -1,0 +1,1 @@
+import{B as e,K as t}from"./utils-BR5Vd7sD.js";import{t as n}from"./store-context-BfdCnkDw.js";var r=t(e()),i=()=>{let e=(0,r.useContext)(n);if(e===void 0)throw Error(`useProjectFilter must be used within StoreProvider`);return e.projectRoot.projectFilter};export{i as t};

@@ -10,7 +10,7 @@ import { useParams } from "next/navigation";
 // plane imports
 import { ROLE, EUserPermissions, EUserPermissionsLevel } from "@plane/constants";
 import { useTranslation } from "@plane/i18n";
-import { ChevronDownOutline, DeleteOutline, LinkOutline, MoreHorizontalOutline } from "@makeplane/propel/icons";
+import { ChevronDownOutline, DeleteOutline, LinkOutline, MailOutline, MoreHorizontalOutline } from "@makeplane/propel/icons";
 import { Icon } from "@makeplane/propel/components/icon";
 import { IconButton } from "@makeplane/propel/components/icon-button";
 import { Menu, MenuContent, MenuItem, MenuTrigger } from "@makeplane/propel/components/menu";
@@ -45,7 +45,7 @@ export const WorkspaceInvitationsListItem = observer(function WorkspaceInvitatio
   // store hooks
   const { allowPermissions, workspaceInfoBySlug } = useUserPermissions();
   const {
-    workspace: { updateMemberInvitation, deleteMemberInvitation, getWorkspaceInvitationDetails },
+    workspace: { updateMemberInvitation, deleteMemberInvitation, resendMemberInvitation, getWorkspaceInvitationDetails },
   } = useMember();
   // derived values
   const invitationDetails = getWorkspaceInvitationDetails(invitationId);
@@ -68,6 +68,25 @@ export const WorkspaceInvitationsListItem = observer(function WorkspaceInvitatio
       (role) =>
         !(currentWorkspaceRole && Number(currentWorkspaceRole) !== 20 && Number(currentWorkspaceRole) < role.key)
     );
+
+  const handleResendInvitation = async () => {
+    try {
+      if (!workspaceSlug || !invitationDetails) return;
+      await resendMemberInvitation(workspaceSlug.toString(), invitationDetails.id);
+      setToast({
+        type: "success",
+        title: "Success!",
+        message: "Invitation reminder email resent successfully.",
+      });
+    } catch (err: unknown) {
+      const error = err as { error?: string };
+      setToast({
+        type: "error",
+        title: "Error!",
+        message: error?.error || "Failed to resend invitation. Please try again.",
+      });
+    }
+  };
 
   const handleRemoveInvitation = async () => {
     try {
@@ -106,6 +125,13 @@ export const WorkspaceInvitationsListItem = observer(function WorkspaceInvitatio
   };
 
   const MENU_ITEMS: TContextMenuItem[] = [
+    {
+      key: "resend",
+      action: () => void handleResendInvitation(),
+      title: "Resend invitation",
+      icon: MailOutline,
+      shouldRender: isAdmin,
+    },
     {
       key: "copy-link",
       action: () => void handleCopyText(),
@@ -149,6 +175,16 @@ export const WorkspaceInvitationsListItem = observer(function WorkspaceInvitatio
           <div className="flex items-center justify-center rounded-sm bg-label-yellow-bg-strong/20 px-2.5 py-1 text-center text-caption-sm-medium text-label-yellow-text">
             <p>{t("common.pending")}</p>
           </div>
+          {isAdmin && (
+            <button
+              type="button"
+              onClick={() => void handleResendInvitation()}
+              className="flex items-center gap-1 rounded border border-subtle bg-surface-1 px-2.5 py-1 text-caption-sm-medium text-secondary hover:bg-surface-2 hover:text-primary transition-colors cursor-pointer"
+            >
+              <Icon icon={MailOutline} className="h-3 w-3" />
+              <span>Resend invite</span>
+            </button>
+          )}
           <SelectDropdownPlacementContext.Provider value={ROLE_DROPDOWN_PLACEMENT}>
             <Select<TRoleOption>
               value={roleOptions.find((role) => role.key === invitationDetails.role) ?? null}

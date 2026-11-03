@@ -1,0 +1,1 @@
+function e(e){try{let t=typeof window<`u`&&window.location.origin?window.location.origin:`http://dummy.com`,n=new URL(e,t);return n.pathname===`/`?e:(n.pathname.endsWith(`/`)||(n.pathname+=`/`),e.startsWith(`/`)?n.pathname+n.search+n.hash:n.toString())}catch(t){return console.warn(`Failed to parse URL for trailing slash enforcement:`,e,t),e}}export{e as t};

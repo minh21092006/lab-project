@@ -1,0 +1,3 @@
+var e={empty_state:{progress:{title:`向周期添加工作项以查看其进度`},chart:{title:`向周期添加工作项以查看燃尽图。`},priority_issue:{title:`一目了然地观察周期中处理的高优先级工作项。`},assignee:{title:`为工作项添加负责人以查看按负责人划分的工作明细。`},label:{title:`为工作项添加标签以查看按标签划分的工作明细。`}}},t={label:`{count, plural, one {周期} other {周期}}`,no_cycle:`无周期`},n={empty_state:{progress:{title:`向周期添加工作项以查看其进度`},priority:{title:`一目了然地观察周期中处理的高优先级工作项`},assignee:{title:`为工作项添加负责人以查看按负责人
+划分的工作明细`},label:{title:`为工作项添加标签以查看按标签
+划分的工作明细`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

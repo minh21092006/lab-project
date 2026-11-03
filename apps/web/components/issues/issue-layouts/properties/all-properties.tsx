@@ -5,7 +5,9 @@
  */
 
 import type { SyntheticEvent } from "react";
-import { useCallback, useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
+import { ConfirmDialog } from "@plane/blocks/dialog";
+import { setToast } from "@plane/blocks/toast";
 import { xor } from "lodash-es";
 import { observer } from "mobx-react";
 import { useParams } from "next/navigation";
@@ -37,6 +39,7 @@ import { useProjectEstimates } from "@/hooks/store/estimates";
 import { useIssues } from "@/hooks/store/use-issues";
 import { useLabel } from "@/hooks/store/use-label";
 import { useProject } from "@/hooks/store/use-project";
+import { useMember } from "@/hooks/store/use-member";
 import { useProjectState } from "@/hooks/store/use-project-state";
 import { useUserProfile } from "@/hooks/store/user";
 import { useAppRouter } from "@/hooks/use-app-router";
@@ -75,6 +78,12 @@ export const IssueProperties = observer(function IssueProperties(props: IIssuePr
   const { data: userProfile } = useUserProfile();
   const { isMobile } = usePlatformOS();
   const projectDetails = getProjectById(issue.project_id);
+  const { getUserDetails } = useMember();
+  const [pendingAssigneeAction, setPendingAssigneeAction] = useState<{
+    ids: string[];
+    type: "add" | "remove";
+    memberNames: string;
+  } | null>(null);
 
   // router
   const router = useAppRouter();
@@ -119,7 +128,50 @@ export const IssueProperties = observer(function IssueProperties(props: IIssuePr
   };
 
   const handleAssignee = async (ids: string[]) => {
-    if (updateIssue) await updateIssue(issue.project_id, issue.id, { assignee_ids: ids });
+    const current = issue?.assignee_ids ?? [];
+    const added = ids.filter((id) => !current.includes(id));
+    const removed = current.filter((id) => !ids.includes(id));
+
+    if (added.length > 0) {
+      const names = added
+        .map((id) => getUserDetails(id)?.display_name || "member")
+        .join(", ");
+      setPendingAssigneeAction({ ids, type: "add", memberNames: names });
+    } else if (removed.length > 0) {
+      const names = removed
+        .map((id) => getUserDetails(id)?.display_name || "member")
+        .join(", ");
+      setPendingAssigneeAction({ ids, type: "remove", memberNames: names });
+    }
+  };
+
+  const handleConfirmAssignment = async () => {
+    if (!pendingAssigneeAction) return;
+    const { ids, type, memberNames } = pendingAssigneeAction;
+    try {
+      if (updateIssue) await updateIssue(issue.project_id, issue.id, { assignee_ids: ids });
+      if (type === "add") {
+        setToast({
+          type: "success",
+          title: "Assignee added",
+          message: `Assigned ${memberNames} and notification sent.`,
+        });
+      } else {
+        setToast({
+          type: "success",
+          title: "Assignee removed",
+          message: `Removed ${memberNames} from work item.`,
+        });
+      }
+    } catch {
+      setToast({
+        type: "error",
+        title: "Error",
+        message: `Failed to ${type === "add" ? "assign" : "remove"} assignee. Please try again.`,
+      });
+    } finally {
+      setPendingAssigneeAction(null);
+    }
   };
 
   const handleModule = useCallback(
@@ -204,8 +256,49 @@ export const IssueProperties = observer(function IssueProperties(props: IIssuePr
   };
 
   return (
-    <div className={className}>
-      {/* basic properties */}
+    <>
+      <div onClick={handleEventPropagation} onKeyDown={(e) => e.stopPropagation()}>
+        <ConfirmDialog
+          isOpen={Boolean(pendingAssigneeAction)}
+          handleClose={() => setPendingAssigneeAction(null)}
+          handleSubmit={handleConfirmAssignment}
+          variant={pendingAssigneeAction?.type === "remove" ? "danger" : "primary"}
+          title={
+            pendingAssigneeAction?.type === "remove"
+              ? "Confirm Remove Assignee"
+              : "Confirm Work Item Assignment"
+          }
+          content={
+            <div className="space-y-2 text-13 text-secondary">
+              <p>
+                Are you sure you want to{" "}
+                {pendingAssigneeAction?.type === "remove" ? "remove " : "assign "}
+                <strong className="text-primary font-semibold">
+                  {pendingAssigneeAction?.memberNames}
+                </strong>{" "}
+                {pendingAssigneeAction?.type === "remove" ? "from" : "to"} work item{" "}
+                <span className="font-semibold text-primary">
+                  {projectDetails?.identifier ? `${projectDetails.identifier}-${issue.sequence_id}` : issue.name}
+                </span>
+                ?
+              </p>
+              {pendingAssigneeAction?.type === "add" && (
+                <p className="text-12 text-tertiary">
+                  An email notification will be delivered to their registered email address.
+                </p>
+              )}
+            </div>
+          }
+          primaryButtonText={
+            pendingAssigneeAction?.type === "remove"
+              ? { loading: "Removing...", default: "Remove Assignee" }
+              : { loading: "Assigning...", default: "Assign & Notify" }
+          }
+          secondaryButtonText="Cancel"
+        />
+      </div>
+      <div className={className}>
+        {/* basic properties */}
       {/* state */}
       <WithDisplayPropertiesHOC displayProperties={displayProperties} displayPropertyKey="state">
         {/* oxlint-disable-next-line jsx_a11y/click-events-have-key-events oxlint-disable-next-line jsx_a11y/no-static-element-interactions */}
@@ -473,5 +566,6 @@ export const IssueProperties = observer(function IssueProperties(props: IIssuePr
         />
       </WithDisplayPropertiesHOC>
     </div>
+    </>
   );
 });

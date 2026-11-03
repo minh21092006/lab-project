@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{g as t}from"./dist-B2kuj_3e.js";var n=e();function r(e){let{count:r,className:i=``}=e;return(0,n.jsx)(`div`,{className:t(`relative flex flex-shrink-0 items-center justify-center rounded-xl bg-accent-primary/20 px-2.5 py-0.5 text-caption-sm-semibold text-accent-primary`,i),children:r})}export{r as t};

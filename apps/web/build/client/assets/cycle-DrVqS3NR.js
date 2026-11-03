@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Agrega elementos de trabajo al ciclo para ver su progreso`},chart:{title:`Agrega elementos de trabajo al ciclo para ver el gráfico de avance.`},priority_issue:{title:`Observa los elementos de trabajo de alta prioridad abordados en el ciclo de un vistazo.`},assignee:{title:`Agrega asignados a los elementos de trabajo para ver un desglose del trabajo por asignados.`},label:{title:`Agrega etiquetas a los elementos de trabajo para ver el desglose del trabajo por etiquetas.`}}},t={label:`{count, plural, one {Ciclo} other {Ciclos}}`,no_cycle:`Sin ciclo`},n={empty_state:{progress:{title:`Agrega elementos de trabajo al Cycle para ver su
+ progreso`},priority:{title:`Observa los elementos de trabajo de alta prioridad abordados en
+ el Cycle de un vistazo.`},assignee:{title:`Agrega asignados a los elementos de trabajo para ver un
+ desglose del trabajo por asignados.`},label:{title:`Agrega etiquetas a los elementos de trabajo para ver el
+ desglose del trabajo por etiquetas.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

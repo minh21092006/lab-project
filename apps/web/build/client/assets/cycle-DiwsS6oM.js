@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Tambahkan item kerja ke siklus untuk melihat kemajuannya`},chart:{title:`Tambahkan item kerja ke siklus untuk melihat grafik burndown.`},priority_issue:{title:`Amati item kerja prioritas yang ditangani dalam siklus pada pandangan pertama.`},assignee:{title:`Tambahkan penugasan ke item kerja untuk melihat pembagian kerja berdasarkan penugasan.`},label:{title:`Tambahkan label ke item kerja untuk melihat pembagian kerja berdasarkan label.`}}},t={label:`{count, plural, one {Siklus} other {Siklus}}`,no_cycle:`Tidak ada siklus`},n={empty_state:{progress:{title:`Tambahkan item kerja ke siklus untuk melihat
+ kemajuannya`},priority:{title:`Amati item kerja prioritas tinggi yang ditangani dalam
+ siklus secara sekilas.`},assignee:{title:`Tambahkan penanggung jawab ke item kerja untuk melihat
+ pembagian pekerjaan berdasarkan penanggung jawab.`},label:{title:`Tambahkan label ke item kerja untuk melihat
+ pembagian pekerjaan berdasarkan label.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

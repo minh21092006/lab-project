@@ -9,7 +9,7 @@ import { Eye } from "lucide-react";
 import { CloseOutline, DownloadOutline } from "@makeplane/propel/icons";
 import { cn, convertBytesToSize } from "@plane/utils";
 import { FileExplorerIcon, getFileCategory } from "./file-icon";
-import { ImagePreviewModal } from "./image-preview-modal";
+import { FilePreviewModal } from "./file-preview-modal";
 import type { CustomAttachmentNodeViewProps } from "./node-view";
 
 type AttachmentCardProps = CustomAttachmentNodeViewProps & {
@@ -24,7 +24,42 @@ export function AttachmentCard(props: AttachmentCardProps) {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const category = getFileCategory(name, mimeType);
-  const isImage = category === "image";
+  const isPreviewable = [
+    "image",
+    "pdf",
+    "word",
+    "excel",
+    "powerpoint",
+    "code",
+    "text",
+    "video",
+    "audio",
+  ].includes(category);
+
+  const getPreviewTitle = () => {
+    switch (category) {
+      case "pdf":
+        return "Xem trước PDF";
+      case "image":
+        return "Xem trước hình ảnh";
+      case "word":
+        return "Xem trước tài liệu Word";
+      case "excel":
+        return "Xem trước bảng tính Excel/CSV";
+      case "powerpoint":
+        return "Xem trước bài trình chiếu";
+      case "code":
+        return "Xem trước mã nguồn";
+      case "text":
+        return "Xem trước văn bản";
+      case "video":
+        return "Xem video";
+      case "audio":
+        return "Nghe âm thanh";
+      default:
+        return "Xem trước tập tin";
+    }
+  };
 
   const handleDownload = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -85,10 +120,10 @@ export function AttachmentCard(props: AttachmentCardProps) {
             filename={name}
             mimeType={mimeType}
             previewSrc={effectivePreviewSrc}
-            onPreviewClick={isImage ? () => setIsPreviewOpen(true) : undefined}
+            onPreviewClick={isPreviewable ? () => setIsPreviewOpen(true) : undefined}
           />
           <div className="flex min-w-0 flex-1 flex-col justify-center gap-0.5">
-            {isImage ? (
+            {isPreviewable ? (
               <button
                 type="button"
                 className="m-0 cursor-pointer truncate bg-transparent p-0 text-left text-13 leading-tight font-medium text-primary hover:underline"
@@ -107,11 +142,11 @@ export function AttachmentCard(props: AttachmentCardProps) {
         </div>
 
         <div className="ml-2 flex shrink-0 items-center gap-0.5">
-          {isImage && (
+          {isPreviewable && (
             <button
               type="button"
               onClick={() => setIsPreviewOpen(true)}
-              title="Preview image"
+              title={getPreviewTitle()}
               className="grid h-7 w-7 place-items-center rounded-md text-placeholder transition-colors hover:bg-surface-1 hover:text-primary"
             >
               <Eye className="h-3.5 w-3.5" />
@@ -141,14 +176,15 @@ export function AttachmentCard(props: AttachmentCardProps) {
         </div>
       </div>
 
-      {isImage && (
-        <ImagePreviewModal
+      {isPreviewOpen && effectivePreviewSrc && (
+        <FilePreviewModal
           isOpen={isPreviewOpen}
           onClose={() => setIsPreviewOpen(false)}
-          src={effectivePreviewSrc || ""}
+          src={effectivePreviewSrc}
           downloadSrc={downloadSrc}
           name={name}
           size={size}
+          mimeType={mimeType}
         />
       )}
     </>

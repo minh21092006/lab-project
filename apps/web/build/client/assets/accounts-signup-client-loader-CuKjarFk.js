@@ -1,0 +1,1 @@
+import{E as e}from"./utils-BR5Vd7sD.js";var t=()=>{throw e(`/sign-up/`)};export{t as clientLoader};

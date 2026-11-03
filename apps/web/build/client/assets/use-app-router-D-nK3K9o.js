@@ -1,0 +1,1 @@
+import{r as e}from"./navigation-d0dN9-cu.js";var t=()=>e();export{t};

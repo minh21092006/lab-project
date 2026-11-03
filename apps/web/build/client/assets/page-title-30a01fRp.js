@@ -1,0 +1,1 @@
+import{B as e,K as t}from"./utils-BR5Vd7sD.js";var n=t(e());function r(e){let{title:t}=e;return(0,n.useEffect)(()=>{t&&(document.title=t??`Plane | Simple, extensible, open-source project management tool.`)},[t]),null}export{r as t};

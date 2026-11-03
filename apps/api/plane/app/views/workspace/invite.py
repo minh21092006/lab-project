@@ -88,19 +88,30 @@ class WorkspaceInvitationsViewset(BaseViewSet):
         for email in emails:
             try:
                 validate_email(email.get("email"))
-                workspace_invitations.append(
-                    WorkspaceMemberInvite(
-                        email=email.get("email").strip().lower(),
+                email_address = email.get("email").strip().lower()
+                token = jwt.encode(
+                    {"email": email_address, "timestamp": datetime.now().timestamp()},
+                    settings.SECRET_KEY,
+                    algorithm="HS256",
+                )
+                invite_obj = WorkspaceMemberInvite.objects.filter(
+                    workspace_id=workspace.id,
+                    email=email_address,
+                ).first()
+                if invite_obj:
+                    invite_obj.role = email.get("role", 5)
+                    invite_obj.token = token
+                    invite_obj.save(update_fields=["role", "token", "updated_at"])
+                    workspace_invitations.append(invite_obj)
+                else:
+                    new_invite = WorkspaceMemberInvite.objects.create(
+                        email=email_address,
                         workspace_id=workspace.id,
-                        token=jwt.encode(
-                            {"email": email, "timestamp": datetime.now().timestamp()},
-                            settings.SECRET_KEY,
-                            algorithm="HS256",
-                        ),
+                        token=token,
                         role=email.get("role", 5),
                         created_by=request.user,
                     )
-                )
+                    workspace_invitations.append(new_invite)
             except ValidationError:
                 return Response(
                     {
@@ -108,10 +119,6 @@ class WorkspaceInvitationsViewset(BaseViewSet):
                     },
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-        # Create workspace member invite
-        workspace_invitations = WorkspaceMemberInvite.objects.bulk_create(
-            workspace_invitations, batch_size=10, ignore_conflicts=True
-        )
 
         current_site = base_host(request=request, is_app=True)
 
@@ -126,6 +133,25 @@ class WorkspaceInvitationsViewset(BaseViewSet):
             )
 
         return Response({"message": "Emails sent successfully"}, status=status.HTTP_200_OK)
+
+    def resend(self, request, slug, pk):
+        workspace = Workspace.objects.get(slug=slug)
+        invitation = WorkspaceMemberInvite.objects.get(pk=pk, workspace=workspace)
+        invitation.token = jwt.encode(
+            {"email": invitation.email, "timestamp": datetime.now().timestamp()},
+            settings.SECRET_KEY,
+            algorithm="HS256",
+        )
+        invitation.save(update_fields=["token", "updated_at"])
+        current_site = base_host(request=request, is_app=True)
+        workspace_invitation.delay(
+            invitation.email,
+            workspace.id,
+            invitation.token,
+            current_site,
+            request.user.email,
+        )
+        return Response({"message": "Invitation resent successfully"}, status=status.HTTP_200_OK)
 
     def destroy(self, request, slug, pk):
         workspace_member_invite = WorkspaceMemberInvite.objects.get(pk=pk, workspace__slug=slug)

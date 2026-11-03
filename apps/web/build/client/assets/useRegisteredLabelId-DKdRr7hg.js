@@ -1,0 +1,1 @@
+import{t as e}from"./useIsoLayoutEffect-BLbo118N.js";import{p as t}from"./shadowDom-DKRlIZZB.js";function n(n,r){let i=t(n);return e(()=>(r(i),()=>{r(void 0)}),[i,r]),i}export{n as t};

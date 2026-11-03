@@ -197,6 +197,14 @@ export class WorkspaceService extends APIService {
       });
   }
 
+  async resendWorkspaceInvitation(workspaceSlug: string, invitationId: string): Promise<any> {
+    return this.post(`/api/workspaces/${workspaceSlug}/invitations/${invitationId}/resend/`)
+      .then((response) => response?.data)
+      .catch((error) => {
+        throw error?.response?.data;
+      });
+  }
+
   async workspaceSlugCheck(slug: string): Promise<any> {
     return this.get(`/api/workspace-slug-check/?slug=${slug}`)
       .then((response) => response?.data)

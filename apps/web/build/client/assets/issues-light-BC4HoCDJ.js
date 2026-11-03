@@ -1,0 +1,1 @@
+var e=`/assets/issues-dark-BFg8-mvo.webp`,t=`/assets/issues-light-BIWRd60x.webp`;export{e as n,t};

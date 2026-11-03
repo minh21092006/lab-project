@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Add work items to the cycle to view it's progress`},chart:{title:`Add work items to the cycle to view the burndown chart.`},priority_issue:{title:`Observe high priority work items tackled in the cycle at a glance.`},assignee:{title:`Add assignees to work items to see a breakdown of work by assignees.`},label:{title:`Add labels to work items to see the breakdown of work by labels.`}}},t={label:`{count, plural, one {Cycle} other {Cycles}}`,no_cycle:`No cycle`},n={empty_state:{progress:{title:`Add work items to the cycle to view it's
+ progress`},priority:{title:`Observe high priority work items tackled in
+ the cycle at a glance.`},assignee:{title:`Add assignees to work items to see a
+ breakdown of work by assignees.`},label:{title:`Add labels to work items to see the
+ breakdown of work by labels.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

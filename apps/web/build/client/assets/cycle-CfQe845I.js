@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Dodaj elementy pracy, aby śledzić postęp`},chart:{title:`Dodaj elementy pracy, aby wyświetlić wykres burndown.`},priority_issue:{title:`Tutaj pojawią się elementy o wysokim priorytecie.`},assignee:{title:`Przypisz elementy, aby zobaczyć podział przypisania.`},label:{title:`Dodaj etykiety, aby przeprowadzić analizę według etykiet.`}}},t={label:`{count, plural, one {Cykl} few {Cykle} other {Cyklów}}`,no_cycle:`Brak cyklu`},n={empty_state:{progress:{title:`Dodaj elementy pracy do cyklu, aby zobaczyć jego
+ postęp`},priority:{title:`Obserwuj elementy pracy o wysokim priorytecie
+ realizowane w cyklu na pierwszy rzut oka.`},assignee:{title:`Dodaj przypisanych do elementów pracy, aby zobaczyć
+ podział pracy według przypisanych osób.`},label:{title:`Dodaj etykiety do elementów pracy, aby zobaczyć
+ podział pracy według etykiet.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

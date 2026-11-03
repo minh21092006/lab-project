@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{F as t,w as n}from"./useIsoLayoutEffect-BLbo118N.js";import{f as r,t as i}from"./FieldRoot-DQ45Kzi_.js";function a({size:e,render:i,...a}){return n({defaultTagName:`div`,render:i,props:t({className:r({size:e})},a)})}var o=e();function s({size:e,...t}){return(0,o.jsx)(i,{...t,render:(0,o.jsx)(a,{size:e})})}export{s as t};

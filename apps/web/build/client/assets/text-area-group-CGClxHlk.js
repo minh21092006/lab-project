@@ -1,0 +1,1 @@
+import{F as e,w as t}from"./useIsoLayoutEffect-BLbo118N.js";import{n}from"./text-area-CxNLKEd2.js";function r({resize:r,render:i,...a}){return t({defaultTagName:`div`,render:i,props:e({className:n({resize:r})},a)})}export{r as t};

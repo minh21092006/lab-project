@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{a as t,t as n}from"./components-DF5-zGie.js";var r=e(),i=t(function(){return(0,r.jsx)(n,{})}),a=()=>[{title:`Create Workspace`}];export{i as default,a as meta};

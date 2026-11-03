@@ -180,3 +180,28 @@
 .ProseMirror[contenteditable="false"] p.editor-paragraph-block:first-child:not(:last-child):empty {
   display: none !important;
 }
+
+/* Sticky Notes - High-contrast dark typography & icons on pastel backgrounds in all themes */
+.group\/sticky,
+[data-sticky-note="true"] {
+  color: #0f172a !important;
+}
+
+.group\/sticky .ProseMirror,
+[data-sticky-note="true"] .ProseMirror {
+  color: #0f172a !important;
+  caret-color: #0f172a !important;
+}
+
+.group\/sticky .ProseMirror *,
+[data-sticky-note="true"] .ProseMirror * {
+  color: inherit;
+}
+
+.group\/sticky .ProseMirror p.is-editor-empty:first-child::before,
+.group\/sticky .ProseMirror p.is-empty::before,
+[data-sticky-note="true"] .ProseMirror p.is-editor-empty:first-child::before,
+[data-sticky-note="true"] .ProseMirror p.is-empty::before {
+  color: #64748b !important;
+  -webkit-text-fill-color: #64748b !important;
+}

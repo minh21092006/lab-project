@@ -1,0 +1,1 @@
+import{B as e,K as t}from"./utils-BR5Vd7sD.js";var n=t(e()),r=(e,t,r,i)=>{(0,n.useEffect)(()=>{if(t){let n=new IntersectionObserver(e=>{e[e.length-1].isIntersecting&&r&&r()},{root:e?.current,rootMargin:i});return n.observe(t),()=>{t&&n.unobserve(t)}}},[i,r,t,e.current])};export{r as t};

@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`დაამატეთ სამუშაო ელემენტები ციკლში მისი პროგრესის სანახავად`},chart:{title:`დაამატეთ სამუშაო ელემენტები ციკლში burn-down გრაფიკის სანახავად.`},priority_issue:{title:`ნახეთ მაღალი პრიორიტეტის სამუშაო ელემენტები, რომლებიც ციკლში მოგვარებულია ერთი შეხედვით.`},assignee:{title:`დაამატეთ მინიჭებულები სამუშაო ელემენტებზე სამუშაოს განაწილების სანახავად მინიჭებულების მიხედვით.`},label:{title:`დაამატეთ იარლიყები სამუშაო ელემენტებზე სამუშაოს განაწილების სანახავად იარლიყების მიხედვით.`}}},t={label:`{count, plural, one {ციკლი} other {ციკლები}}`,no_cycle:`ციკლი არ არის`},n={empty_state:{progress:{title:`Add work items to the cycle to view it's
+ progress`},priority:{title:`Observe high priority work items tackled in
+ the cycle at a glance.`},assignee:{title:`Add assignees to work items to see a
+ breakdown of work by assignees.`},label:{title:`Add labels to work items to see the
+ breakdown of work by labels.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

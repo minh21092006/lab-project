@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Adaugă activități în ciclu pentru a vedea progresul`},chart:{title:`Adaugă activități în ciclu pentru a vedea graficul de finalizare a activităților.`},priority_issue:{title:`Observă rapid activitățile cu prioritate ridicată abordate în ciclu.`},assignee:{title:`Adaugă responsabili pentru a vedea repartizarea muncii pe persoane.`},label:{title:`Adaugă etichete activităților pentru a vedea repartizarea muncii pe etichete.`}}},t={label:`{count, plural, one {Ciclu} other {Cicluri}}`,no_cycle:`Niciun ciclu`},n={empty_state:{progress:{title:`Adaugă elemente de lucru la ciclu pentru a-i vedea
+ progresul`},priority:{title:`Observă elementele de lucru cu prioritate ridicată abordate în
+ ciclu dintr-o privire.`},assignee:{title:`Adaugă responsabili la elementele de lucru pentru a vedea o
+ defalcare a muncii după responsabili.`},label:{title:`Adaugă etichete la elementele de lucru pentru a vedea
+ defalcarea muncii după etichete.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

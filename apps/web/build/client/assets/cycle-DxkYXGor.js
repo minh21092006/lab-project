@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Přidejte položky pro sledování pokroku`},chart:{title:`Přidejte položky pro zobrazení burndown grafu.`},priority_issue:{title:`Zobrazí se vysoce prioritní položky.`},assignee:{title:`Přiřaďte položky pro přehled přiřazení.`},label:{title:`Přidejte štítky pro analýzu podle štítků.`}}},t={label:`{count, plural, one {Cyklus} few {Cykly} other {Cyklů}}`,no_cycle:`Žádný cyklus`},n={empty_state:{progress:{title:`Přidejte pracovní položky do cyklu, abyste viděli jeho
+ pokrok`},priority:{title:`Pozorujte vysoce prioritní pracovní položky řešené v
+ cyklu na první pohled.`},assignee:{title:`Přidejte přiřazení k pracovním položkám, abyste viděli
+ rozdělení práce podle přiřazení.`},label:{title:`Přidejte štítky k pracovním položkám, abyste viděli
+ rozdělení práce podle štítků.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

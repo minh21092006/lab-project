@@ -1,0 +1,1 @@
+var e={label:`{count, plural, one {mô-đun} other {mô-đun}}`,no_module:`Không có mô-đun`,select:`Thêm mô-đun`},t={module:e};export{t as default,e as module};

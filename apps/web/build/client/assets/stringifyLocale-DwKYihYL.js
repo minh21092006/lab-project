@@ -1,0 +1,1 @@
+import{R as e}from"./useIsoLayoutEffect-BLbo118N.js";var t=e(`border border-subtle bg-layer-2`,{variants:{elevation:{raised:`shadow-overlay-100`,overlay:`shadow-overlay-200`},radius:{md:`rounded-md`,lg:`rounded-lg`}}});function n(e){return t(e)}function r(e){return Array.isArray(e)?e.map(e=>r(e)).join(`,`):e==null?``:String(e)}export{n,r as t};

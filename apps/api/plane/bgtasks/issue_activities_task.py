@@ -17,6 +17,7 @@ from django.utils import timezone
 # Module imports
 from plane.app.serializers import IssueActivitySerializer
 from plane.bgtasks.notification_task import notifications
+from plane.bgtasks.issue_assignment_task import send_issue_assignment_email
 from plane.db.models import (
     CommentReaction,
     Cycle,
@@ -183,6 +184,19 @@ def track_priority(
                 epoch=epoch,
             )
         )
+
+        # Send priority update email notification
+        try:
+            from plane.bgtasks.issue_assignment_task import send_issue_priority_email
+
+            send_issue_priority_email.delay(
+                issue_id=str(issue_id),
+                actor_id=str(actor_id) if actor_id else None,
+                old_priority=current_instance.get("priority"),
+                new_priority=requested_data.get("priority"),
+            )
+        except Exception as task_err:
+            log_exception(task_err)
 
 
 # Track changes in state of the issue
@@ -404,6 +418,19 @@ def track_assignees(
             )
         )
 
+        # Trigger immediate assignment email notification
+        if actor_id is None or str(added_asignee) != str(actor_id):
+            try:
+                from plane.bgtasks.issue_assignment_task import send_issue_assignment_email
+
+                send_issue_assignment_email.delay(
+                    issue_id=str(issue_id),
+                    assignee_id=str(added_asignee),
+                    actor_id=str(actor_id) if actor_id else None,
+                )
+            except Exception as task_err:
+                log_exception(task_err)
+
     # Create assignees subscribers to the issue and ignore if already
     IssueSubscriber.objects.bulk_create(bulk_subscribers, batch_size=10, ignore_conflicts=True)
 
@@ -571,14 +598,16 @@ def create_issue_activity(
         workspace_id=workspace_id,
         comment="created the issue",
         verb="created",
+        field="None",
         actor_id=actor_id,
         epoch=epoch,
     )
     issue_activity.created_at = issue.created_at
     issue_activity.actor_id = issue.created_by_id
-    issue_activity.save(update_fields=["created_at", "actor_id"])
+    issue_activity.save(update_fields=["created_at", "actor_id", "field"])
+    issue_activities.append(issue_activity)
     requested_data = json.loads(requested_data) if requested_data is not None else None
-    if requested_data.get("assignee_ids") is not None:
+    if requested_data and (requested_data.get("assignee_ids") is not None or requested_data.get("assignees") is not None):
         track_assignees(
             requested_data,
             current_instance,
@@ -1581,7 +1610,7 @@ def issue_activity(
             )
 
         # Save all the values to database
-        issue_activities_created = IssueActivity.objects.bulk_create(issue_activities)
+        issue_activities_created = IssueActivity.objects.bulk_create(issue_activities, ignore_conflicts=True)
 
         if notification:
             notifications.delay(

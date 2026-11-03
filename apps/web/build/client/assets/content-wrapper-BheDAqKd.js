@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{g as t}from"./dist-B2kuj_3e.js";var n=e();function r({className:e,children:r}){return(0,n.jsx)(`div`,{className:`h-full w-full overflow-hidden`,children:(0,n.jsx)(`div`,{className:t(`relative h-full w-full overflow-x-hidden overflow-y-scroll`,e),children:r})})}export{r as t};

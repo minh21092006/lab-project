@@ -1,0 +1,1 @@
+var e={label:`{count, plural, one {模組} other {模組}}`,no_module:`無模組`,select:`新增模組`},t={module:e};export{t as default,e as module};

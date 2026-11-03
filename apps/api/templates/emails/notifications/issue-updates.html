@@ -11,17 +11,17 @@
   <body bgcolor="#ffffff" text="#3b3f44" link="#006399" yahoo="fix" style="background-color: #f7f9ff; margin: 20px" >
     <div style=" width: 600px; table-layout: fixed; height: 100%; margin-left: auto; margin-right: auto; " >
       <!-- Header --> 
-      <div>
-        <table style="width: 600px" cellspacing="0">
+      <div style="background-color: #0b0f19; border-radius: 6px 6px 0 0; padding: 22px 30px;">
+        <table style="width: 100%" cellspacing="0" cellpadding="0">
           <tr>
             <td>
-              <div style="margin-left: 30px; margin-bottom: 20px; margin-top: 20px" > <img src="https://media.docs.plane.so/logo/new-logo-white.png" width="150" border="0" /> </div>
+              <img src="https://media.docs.plane.so/logo/new-logo-white.png" width="120" border="0" style="display: block;" alt="Plane" />
             </td>
           </tr>
         </table>
       </div>
       <!-- Body --> 
-      <div style=" color: #1f2d5c; padding: 30px; border-radius: 4px; background-color: #fcfcfd; max-width: 100%; " >
+      <div style=" color: #1f2d5c; padding: 30px; border-radius: 0 0 6px 6px; background-color: #ffffff; border: 1px solid #e2e8f0; border-top: none; max-width: 100%; " >
         <div>
           <table style="width: 100%">
             <tr>
@@ -53,7 +53,7 @@
                     {% if update.actor_detail.avatar_url %} <img src="{{ update.actor_detail.avatar_url }}" width="25" height="25" border="0" /> {% else %} 
                     <table cellspacing="0" cellpadding="0">
                       <tr>
-                        <td style=" width: 25px; height: 25px; background-color: #4f3422; border-radius: 50%; text-align: center; " > <span style=" color: white; font-weight: 500; font-size: 13px; line-height: 25px; display: inline-block; " > {{ update.actor_detail.first_name.0 }} </span> </td>
+                        <td style=" width: 25px; height: 25px; background-color: #1080bc; border-radius: 50%; text-align: center; " > <span style=" color: white; font-weight: 500; font-size: 13px; line-height: 25px; display: inline-block; " > {{ update.actor_detail.first_name.0 }} </span> </td>
                       </tr>
                     </table>
                     {% endif %} 
@@ -194,7 +194,7 @@
                   {% if comment.actor_detail.avatar_url %} <img src="{{ comment.actor_detail.avatar_url }}" width="25" height="25" border="0" /> {% else %} 
                   <table cellspacing="0" cellpadding="0">
                     <tr>
-                      <td style=" width: 25px; height: 25px; background-color: #4f3422; border-radius: 50%; text-align: center; " > <span style=" color: white; font-weight: 500; font-size: 13px; line-height: 25px; display: inline-block; " > {{ comment.actor_detail.first_name.0 }} </span> </td>
+                      <td style=" width: 25px; height: 25px; background-color: #1080bc; border-radius: 50%; text-align: center; " > <span style=" color: white; font-weight: 500; font-size: 13px; line-height: 25px; display: inline-block; " > {{ comment.actor_detail.first_name.0 }} </span> </td>
                     </tr>
                   </table>
                   {% endif %} 

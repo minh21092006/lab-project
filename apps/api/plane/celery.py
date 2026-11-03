@@ -42,6 +42,11 @@ app = Celery("plane")
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
 app.conf.beat_schedule = {
+    # Daily deadline reminder job
+    "check-daily-approaching-deadline-reminders": {
+        "task": "plane.bgtasks.deadline_reminder_task.send_deadline_reminders",
+        "schedule": crontab(hour=8, minute=0),
+    },
     # Intra day recurring jobs
     "check-every-five-minutes-to-send-email-notifications": {
         "task": "plane.bgtasks.email_notification_task.stack_email_notification",

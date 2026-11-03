@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Fügen Sie Elemente hinzu, um den Fortschritt zu verfolgen`},chart:{title:`Fügen Sie Elemente hinzu, um ein Burndown-Diagramm anzuzeigen.`},priority_issue:{title:`Hochpriorisierte Arbeitselemente werden hier angezeigt.`},assignee:{title:`Weisen Sie Elemente zu, um eine Übersicht der Zuweisungen zu sehen.`},label:{title:`Fügen Sie Labels hinzu, um eine Analyse nach Labels zu erhalten.`}}},t={label:`{count, plural, one {Zyklus} few {Zyklen} other {Zyklen}}`,no_cycle:`Kein Zyklus`},n={empty_state:{progress:{title:`Fügen Sie Arbeitsaufgaben zum Zyklus hinzu, um
+ seinen Fortschritt zu sehen`},priority:{title:`Beobachten Sie hochprioritäre Arbeitsaufgaben, die
+ im Zyklus auf einen Blick bearbeitet werden.`},assignee:{title:`Fügen Sie Arbeitsaufgaben Bearbeitern hinzu, um eine
+ Aufschlüsselung der Arbeit nach Bearbeitern zu sehen.`},label:{title:`Fügen Sie Arbeitsaufgaben Labels hinzu, um die
+ Aufschlüsselung der Arbeit nach Labels zu sehen.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

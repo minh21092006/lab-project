@@ -1,0 +1,1 @@
+import{E as e}from"./utils-BR5Vd7sD.js";var t=({params:t})=>{let{workspaceSlug:n}=t;throw e(`/${n}/analytics/overview/`)};export{t as clientLoader};

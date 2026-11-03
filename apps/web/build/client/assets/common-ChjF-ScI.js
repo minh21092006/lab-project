@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{r as t}from"./use-navigation-preferences-BepE-twn.js";import{n}from"./use-project-crumb-props-DSXqVLhs.js";var r=e();function i(e){let{workspaceSlug:i,projectId:a,...o}=e,{preferences:s}=t();return s.navigationMode===`TABBED`?null:(0,r.jsx)(n,{workspaceSlug:i,projectId:a,...o})}export{i as t};

@@ -1,0 +1,1 @@
+var e=Object.freeze((()=>{if(typeof window>`u`)return{isMobile:!1,platform:``};let e=window.navigator.userAgent,t=/iPhone|iPad|iPod|Android/i.test(e),n=``;return t||(n=e.indexOf(`Win`)===-1?e.indexOf(`Mac`)===-1?e.indexOf(`Linux`)===-1?`Unknown`:`Linux`:`MacOS`:`Windows`),{isMobile:t,platform:n}})()),t=()=>e;export{t};

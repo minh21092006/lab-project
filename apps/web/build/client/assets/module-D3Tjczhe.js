@@ -1,0 +1,1 @@
+var e={label:`{count, plural, one {მოდული} other {მოდულები}}`,no_module:`მოდული არ არის`,select:`Add modules`},t={module:e};export{t as default,e as module};

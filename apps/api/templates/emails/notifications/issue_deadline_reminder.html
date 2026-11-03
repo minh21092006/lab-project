@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>[{{issue_identifier}}] Reminder: Target date is approaching ({{target_date}})</title>
+
+    <style>
+      body, table, td, p { margin: 0; padding: 0; }
+      img { border: 0; line-height: 100%; text-decoration: none; -ms-interpolation-mode: bicubic; }
+      table { border-collapse: collapse; }
+      @media only screen and (max-width: 600px) {
+        .email-container { width: 100% !important; }
+        .email-content { padding: 24px 20px !important; }
+      }
+    </style>
+  </head>
+
+  <body
+    bgcolor="#f9f9f9"
+    style="
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      font-weight: 400;
+      color: #474747;
+      background-color: #f9f9f9;
+    "
+  >
+    <span class="preheader" style="display: none; font-size: 1px; color: transparent; line-height: 1px; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; visibility: hidden;">
+      Reminder: The target date for {{issue_identifier}}: {{issue_name}} is approaching on {{target_date}}.
+    </span>
+
+    <center class="email-body" style="width: 100%; background-color: #f9f9f9; padding: 40px 0;">
+      <!-- HEADER -->
+      <table role="presentation" width="100%">
+        <tr>
+          <td></td>
+          <td class="email-container" width="620" style="width: 620px; max-width: 620px; margin: 0 auto;">
+            <table role="presentation" width="100%" style="background-color: #000000;">
+              <tr>
+                <td style="padding: 24px 40px; text-align: center;">
+                  <img src="https://media.docs.plane.so/logo/new-logo-dark.png" width="120" alt="Plane" style="height: auto; display: block; margin: 0 auto;" />
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+
+      <!-- BODY -->
+      <table role="presentation" width="100%">
+        <tr>
+          <td></td>
+          <td class="email-container" width="620" style="width: 620px; max-width: 620px; margin: 0 auto;">
+            <table role="presentation" width="100%" class="email-content" style="background-color: #ffffff; padding: 32px 40px;">
+              <tr>
+                <td style="font-size: 16px; line-height: 1.5; color: #474747;">
+                  <h1 style="margin: 0 0 16px; font-size: 22px; line-height: 1.35; font-weight: 600; color: #111111;">
+                    Target date reminder
+                  </h1>
+
+                  <p style="margin: 0 0 20px; line-height: 1.6;">
+                    Hi <strong>{{assignee_name}}</strong>,
+                    <br />
+                    This is a reminder that the target date for
+                    <strong>{{issue_name}}</strong> in <strong>{{project_name}}</strong> is approaching on
+                    <strong style="color: #d97706;">{{target_date}}</strong>.
+                  </p>
+
+                  <!-- Card -->
+                  <div style="background-color: #f7f9ff; border-radius: 8px; border: 1px solid #c1d0ff; padding: 20px; margin: 20px 0 24px;">
+                    <div style="background-color: #ffffff; border-radius: 6px; border: 1px solid #e2e8f0; padding: 16px;">
+                      <div style="font-size: 12px; font-weight: 600; color: #1080bc; margin-bottom: 4px;">
+                        {{issue_identifier}}
+                      </div>
+                      <div style="font-size: 16px; font-weight: 600; color: #111827; margin-bottom: 16px;">
+                        {{issue_name}}
+                      </div>
+
+                      <table role="presentation" width="100%" cellspacing="0" cellpadding="0">
+                        <tr>
+                          <td width="35%" style="padding: 4px 0; font-size: 13px; color: #64748b;">Target date:</td>
+                          <td width="65%" style="padding: 4px 0; font-size: 13px; color: #d97706; font-weight: 600;">{{target_date}}</td>
+                        </tr>
+                        <tr>
+                          <td width="35%" style="padding: 4px 0; font-size: 13px; color: #64748b;">State:</td>
+                          <td width="65%" style="padding: 4px 0; font-size: 13px; color: #0f172a; font-weight: 500;">{{state}}</td>
+                        </tr>
+                        <tr>
+                          <td width="35%" style="padding: 4px 0; font-size: 13px; color: #64748b;">Priority:</td>
+                          <td width="65%" style="padding: 4px 0; font-size: 13px; color: #0f172a; font-weight: 500;">{{priority}}</td>
+                        </tr>
+                        <tr>
+                          <td width="35%" style="padding: 4px 0; font-size: 13px; color: #64748b;">Project:</td>
+                          <td width="65%" style="padding: 4px 0; font-size: 13px; color: #0f172a; font-weight: 500;">{{project_name}}</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+
+                  <!-- CTA button -->
+                  <table role="presentation" cellspacing="0" cellpadding="0" border="0" style="margin: 20px 0 24px;">
+                    <tr>
+                      <td>
+                        <a href="{{issue_url}}" target="_blank" style="background-color: #1080bc; border-radius: 6px; color: #ffffff; padding: 12px 24px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; font-weight: 500;">
+                          View work item
+                        </a>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <!-- Fallback link -->
+                  <p style="font-size: 14px; line-height: 1.5; color: #666666; margin: 0 0 6px;">
+                    If the button doesn't work, copy and paste this link into your browser:
+                  </p>
+                  <p style="font-size: 13px; line-height: 1.4; color: #1080bc; word-break: break-all; margin: 0 0 24px;">
+                    <a href="{{issue_url}}" target="_blank" style="color: #1080bc; text-decoration: underline;">
+                      {{issue_url}}
+                    </a>
+                  </p>
+
+                  <p style="font-size: 12px; line-height: 1.5; color: #888888; margin: 0; border-top: 1px solid #eaeaea; padding-top: 16px;">
+                    Note: This email was sent to {{assignee_email}}. If you weren't expecting this, you can safely ignore this email.
+                  </p>
+                </td>
+              </tr>
+            </table>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+    </center>
+  </body>
+</html>
+

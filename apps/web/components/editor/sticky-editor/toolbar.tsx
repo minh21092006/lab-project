@@ -68,7 +68,11 @@ export function StickyEditorToolbar(props: Props) {
         {/* color palette */}
         {showColorPalette && <ColorPalette handleUpdate={handleColorChange} />}
         <Tooltip label="Background color">
-          <button type="button" onClick={() => setShowColorPalette(!showColorPalette)} className="flex text-primary/50">
+          <button
+            type="button"
+            onClick={() => setShowColorPalette(!showColorPalette)}
+            className="flex rounded-sm p-1 text-slate-700 hover:text-black hover:bg-black/10 transition-colors"
+          >
             <PaletteOutline className="my-auto size-4" />
           </button>
         </Tooltip>
@@ -85,7 +89,12 @@ export function StickyEditorToolbar(props: Props) {
                       <button
                         type="button"
                         onClick={() => executeCommand(item)}
-                        className={cn("grid aspect-square place-items-center rounded-xs p-0.5 text-primary/50", {})}
+                        className={cn(
+                          "grid aspect-square place-items-center rounded-xs p-1 text-slate-700 hover:text-black hover:bg-black/10 transition-colors",
+                          {
+                            "text-black bg-black/15 font-bold": isItemActive,
+                          }
+                        )}
                       >
                         <item.icon
                           className={cn("h-3.5 w-3.5", {
@@ -104,7 +113,11 @@ export function StickyEditorToolbar(props: Props) {
       </div>
       {/* delete action */}
       <Tooltip label="Delete">
-        <button type="button" onClick={handleDelete} className="my-auto text-primary/50">
+        <button
+          type="button"
+          onClick={handleDelete}
+          className="my-auto rounded-sm p-1 text-slate-700 hover:text-red-600 hover:bg-red-500/10 transition-colors"
+        >
           <DeleteOutline className="size-4" />
         </button>
       </Tooltip>

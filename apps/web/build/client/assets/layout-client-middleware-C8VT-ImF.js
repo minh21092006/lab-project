@@ -1,0 +1,1 @@
+import{E as e}from"./utils-BR5Vd7sD.js";import{t}from"./helper-C6C1ZCJ7.js";var n=[async({request:n},r)=>{let i=t(n.url);if(i!==n.url)throw e(i,{status:308});return r()}];export{n as clientMiddleware};

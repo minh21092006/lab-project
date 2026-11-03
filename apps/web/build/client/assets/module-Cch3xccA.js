@@ -1,0 +1,1 @@
+var e={label:`{count, plural, one {Modul} other {Modul}}`,no_module:`Tidak ada modul`,select:`Tambah modul`},t={module:e};export{t as default,e as module};

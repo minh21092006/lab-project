@@ -1,0 +1,4 @@
+var e={empty_state:{progress:{title:`サイクルの進捗を表示するには作業項目を追加してください`},chart:{title:`バーンダウンチャートを表示するには作業項目を追加してください。`},priority_issue:{title:`サイクルで取り組まれている優先度の高い作業項目を一目で確認できます。`},assignee:{title:`担当者別の作業の内訳を確認するには、作業項目に担当者を追加してください。`},label:{title:`ラベル別の作業の内訳を確認するには、作業項目にラベルを追加してください。`}}},t={label:`{count, plural, one {サイクル} other {サイクル}}`,no_cycle:`サイクルなし`},n={empty_state:{progress:{title:`サイクルの進捗を表示するには作業項目を追加してください`},priority:{title:`サイクル内で取り組まれた高優先度の作業項目を
+一目で確認できます。`},assignee:{title:`作業項目に担当者を追加して、
+担当者別の作業内訳を確認できます。`},label:{title:`作業項目にラベルを追加して、
+ラベル別の作業内訳を確認できます。`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

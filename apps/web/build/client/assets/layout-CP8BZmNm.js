@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{a as t,t as n}from"./components-DF5-zGie.js";var r=e(),i=()=>[{title:`Sign up - Plane`},{name:`robots`,content:`index, nofollow`}],a=t(function(){return(0,r.jsx)(n,{})});export{a as default,i as meta};

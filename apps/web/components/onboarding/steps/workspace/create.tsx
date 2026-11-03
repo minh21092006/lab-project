@@ -211,8 +211,8 @@ export const WorkspaceCreateStep = observer(function WorkspaceCreateStep({
                   }
                 )}
               >
-                <span className={cn("rounded-md pr-0 whitespace-nowrap text-secondary")}>
-                  {window && window.location.host}/
+                <span className={cn("rounded-md pr-0 whitespace-nowrap text-tertiary select-none")}>
+                  {getWorkspaceDisplayHost()}/
                 </span>
                 <input
                   id="slug"

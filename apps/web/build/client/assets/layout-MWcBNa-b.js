@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{a as t,t as n}from"./components-DF5-zGie.js";import{t as r}from"./mobxreact.esm-DfNzTozP.js";var i=e();function a(){return(0,i.jsx)(n,{})}var o=t(r(a));export{o as default};

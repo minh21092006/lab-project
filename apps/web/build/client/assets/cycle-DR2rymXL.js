@@ -1,0 +1,5 @@
+var e={empty_state:{progress:{title:`Додайте одиниці, щоб відстежувати прогрес`},chart:{title:`Додайте одиниці, щоб побачити burndown-графік.`},priority_issue:{title:`Тут з’являться найпріоритетніші робочі одиниці.`},assignee:{title:`Призначте робочі одиниці, щоб побачити розподіл.`},label:{title:`Додайте мітки, щоб аналізувати за мітками.`}}},t={label:`{count, plural, one {Цикл} few {Цикли} other {Циклів}}`,no_cycle:`Немає циклу`},n={empty_state:{progress:{title:`Додайте робочі елементи до циклу, щоб
+ переглянути його прогрес`},priority:{title:`Спостерігайте за важливими робочими
+ елементами, що розглядаються в циклі.`},assignee:{title:`Додайте призначених осіб до робочих елементів,
+ щоб побачити розподіл роботи за призначеними особами.`},label:{title:`Додайте лейбли до робочих елементів, щоб
+ побачити розподіл роботи за лейблами.`}}},r={active_cycle:e,cycle:t,active_cycle_analytics:n};export{e as active_cycle,n as active_cycle_analytics,t as cycle,r as default};

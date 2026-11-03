@@ -1,0 +1,1 @@
+import{B as e,K as t}from"./utils-BR5Vd7sD.js";var n=t(e()),r=()=>{let[e,t]=(0,n.useState)(new Date);return(0,n.useEffect)(()=>{let e=setInterval(()=>{t(new Date)},6e4);return()=>clearInterval(e)},[]),{currentTime:e}};export{r as t};

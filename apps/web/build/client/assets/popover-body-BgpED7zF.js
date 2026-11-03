@@ -1,0 +1,1 @@
+import{F as e,w as t}from"./useIsoLayoutEffect-BLbo118N.js";import{o as n}from"./popover-trigger-pYO8quTd.js";function r({render:r,...i}){return t({defaultTagName:`div`,render:r,props:e({className:n()},i)})}export{r as t};

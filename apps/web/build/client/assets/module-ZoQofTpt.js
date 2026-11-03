@@ -1,0 +1,1 @@
+var e={label:`{count, plural, one {Modul} few {Moduly} other {Modulov}}`,no_module:`Žiadny modul`,select:`Pridať moduly`},t={module:e};export{t as default,e as module};

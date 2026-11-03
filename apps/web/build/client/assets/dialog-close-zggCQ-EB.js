@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{F as t,w as n}from"./useIsoLayoutEffect-BLbo118N.js";import{p as r}from"./alert-dialog-title-CztVeKvZ.js";import{c as i}from"./dialog-content-CY8QcQ1z.js";function a({render:e,...r}){return n({defaultTagName:`div`,render:e,props:t({className:i()},r)})}var o=e();function s(e){return(0,o.jsx)(r,{...e})}export{a as n,s as t};

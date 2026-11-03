@@ -127,6 +127,13 @@ def create_payload(notification_data):
     return data
 
 
+def resolve_email_avatar(user):
+    if user and user.avatar and user.avatar.startswith("https://"):
+        if "localhost" not in user.avatar and "127.0.0.1" not in user.avatar:
+            return user.avatar
+    return None
+
+
 def process_mention(mention_component):
     soup = BeautifulSoup(mention_component, "html.parser")
     mentions = soup.find_all("mention-component")
@@ -163,9 +170,10 @@ def send_email_notification(issue_id, notification_data, receiver_id, email_noti
             ri = redis_instance()
             base_api = ri.get(str(issue_id)).decode() if ri.get(str(issue_id)) else None
 
-            # Skip if base api is not present
+            # Fallback to WEB_URL if not present in redis
             if not base_api:
-                return
+                from django.conf import settings
+                base_api = getattr(settings, "WEB_URL", "http://localhost")
 
             data = create_payload(notification_data=notification_data)
 
@@ -188,6 +196,17 @@ def send_email_notification(issue_id, notification_data, receiver_id, email_noti
             actors_involved = []
             for actor_id, changes in data.items():
                 actor = User.objects.get(pk=actor_id)
+                actor_avatar = resolve_email_avatar(actor)
+                actor_first = (
+                    actor.first_name
+                    or (actor.display_name if not actor.display_name.startswith(actor.email.split("@")[0]) else None)
+                    or actor.email.split("@")[0]
+                )
+                actor_detail_obj = {
+                    "avatar_url": actor_avatar,
+                    "first_name": actor_first,
+                    "last_name": actor.last_name or "",
+                }
                 total_changes = total_changes + len(changes)
                 comment = changes.pop("comment", False)
                 mention = changes.pop("mention", False)
@@ -196,11 +215,7 @@ def send_email_notification(issue_id, notification_data, receiver_id, email_noti
                     comments.append(
                         {
                             "actor_comments": comment,
-                            "actor_detail": {
-                                "avatar_url": f"{base_api}{actor.avatar_url}",
-                                "first_name": actor.first_name,
-                                "last_name": actor.last_name,
-                            },
+                            "actor_detail": actor_detail_obj,
                         }
                     )
                 if mention:
@@ -209,11 +224,7 @@ def send_email_notification(issue_id, notification_data, receiver_id, email_noti
                     comments.append(
                         {
                             "actor_comments": mention,
-                            "actor_detail": {
-                                "avatar_url": f"{base_api}{actor.avatar_url}",
-                                "first_name": actor.first_name,
-                                "last_name": actor.last_name,
-                            },
+                            "actor_detail": actor_detail_obj,
                         }
                     )
                 activity_time = changes.pop("activity_time")
@@ -223,11 +234,7 @@ def send_email_notification(issue_id, notification_data, receiver_id, email_noti
                 if changes:
                     template_data.append(
                         {
-                            "actor_detail": {
-                                "avatar_url": f"{base_api}{actor.avatar_url}",
-                                "first_name": actor.first_name,
-                                "last_name": actor.last_name,
-                            },
+                            "actor_detail": actor_detail_obj,
                             "changes": changes,
                             "issue_details": {
                                 "name": issue.name,

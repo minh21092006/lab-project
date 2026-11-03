@@ -1,0 +1,1 @@
+import{E as e}from"./utils-BR5Vd7sD.js";var t=({params:t,request:n})=>{let r=new URL(n.url).searchParams;throw e(`/settings/profile/${t[`*`]||`general`}?${r.toString()}`)};export{t as clientLoader};

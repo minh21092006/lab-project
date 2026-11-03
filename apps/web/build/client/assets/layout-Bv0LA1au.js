@@ -1,0 +1,1 @@
+import{t as e}from"./jsx-runtime-BBkQMlCM.js";import{a as t,t as n}from"./components-DF5-zGie.js";var r=e(),i=()=>[{name:`robots`,content:`index, nofollow`},{name:`viewport`,content:`width=device-width, initial-scale=1, minimum-scale=1, viewport-fit=cover`}],a=t(function(){return(0,r.jsx)(n,{})});export{a as default,i as meta};

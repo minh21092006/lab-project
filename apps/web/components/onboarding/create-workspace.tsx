@@ -20,6 +20,7 @@ import type { IUser, IWorkspace, TOnboardingSteps } from "@plane/types";
 import { Select } from "@plane/blocks/select";
 import { Spinner } from "@plane/blocks/spinner";
 import { validateWorkspaceName, validateSlug } from "@plane/utils";
+import { getWorkspaceDisplayHost } from "@/helpers/workspace.helper";
 // hooks
 import { useWorkspace } from "@/hooks/store/use-workspace";
 import { useUserProfile, useUserSettings } from "@/hooks/store/user";
@@ -196,13 +197,14 @@ export const CreateWorkspace = observer(function CreateWorkspace(props: Props) {
             }}
             render={({ field: { value, ref, onChange } }) => (
               <Field name="slug" invalid={invalidSlug || Boolean(errors.slug)}>
-                <InputGroup size="2xl">
-                  <span className="text-13 whitespace-nowrap">{window && window.location.host}/</span>
+                <InputGroup size="2xl" className="!gap-0">
+                  <span className="text-13 whitespace-nowrap text-tertiary select-none">{getWorkspaceDisplayHost()}/</span>
                   <Input
                     size="2xl"
                     id="slug"
                     name="slug"
                     type="text"
+                    className="!pl-0.5"
                     value={value.toLocaleLowerCase().trim().replace(/ /g, "-")}
                     onChange={(e) => {
                       const validation = validateSlug(e.target.value);

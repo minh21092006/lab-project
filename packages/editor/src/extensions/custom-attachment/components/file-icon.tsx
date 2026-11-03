@@ -104,11 +104,15 @@ export const getFileCategory = (filename?: string | null, mimeType?: string | nu
       "yaml",
       "yml",
       "xml",
+      "graphql",
+      "rust",
+      "vue",
+      "svelte",
     ].includes(ext)
   ) {
     return "code";
   }
-  if (["txt", "md", "markdown", "log"].includes(ext) || type.startsWith("text/")) {
+  if (["txt", "md", "markdown", "log", "env", "ini", "toml", "conf"].includes(ext) || type.startsWith("text/")) {
     return "text";
   }
   if (type.startsWith("audio/") || ["mp3", "wav", "ogg", "flac", "aac", "m4a", "wma"].includes(ext)) {
@@ -122,6 +126,41 @@ export const getFileCategory = (filename?: string | null, mimeType?: string | nu
   }
   return "generic";
 };
+
+type FileBadgeProps = {
+  children: React.ReactNode;
+  onPreviewClick?: () => void;
+  className?: string;
+  title?: string;
+};
+
+function FileBadge({ children, onPreviewClick, className, title }: FileBadgeProps) {
+  if (onPreviewClick) {
+    return (
+      <button
+        type="button"
+        onClick={onPreviewClick}
+        title={title}
+        className={cn(
+          "shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border transition-all cursor-pointer hover:shadow hover:scale-105",
+          className
+        )}
+      >
+        {children}
+      </button>
+    );
+  }
+  return (
+    <div
+      className={cn(
+        "shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+        className
+      )}
+    >
+      {children}
+    </div>
+  );
+}
 
 type FileExplorerIconProps = {
   filename?: string | null;
@@ -165,158 +204,176 @@ export function FileExplorerIcon(props: FileExplorerIconProps) {
   switch (category) {
     case "image":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem trước ${filename}` : "Xem trước hình ảnh"}
           className={cn(
-            "border-purple-500/25 bg-purple-500/10 text-purple-400 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-purple-500/25 bg-purple-500/10 text-purple-400 hover:border-purple-500/50 hover:bg-purple-500/20",
             className
           )}
         >
           <ImageIcon className="h-4 w-4" />
           <span className="text-purple-400 text-[8px] font-bold tracking-tight">{badgeText || "IMG"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "pdf":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem trước ${filename}` : "Xem trước PDF"}
           className={cn(
-            "border-red-500/25 bg-red-500/10 text-red-500 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-red-500/25 bg-red-500/10 text-red-500 hover:border-red-500/50 hover:bg-red-500/20",
             className
           )}
         >
           <FileText className="h-4 w-4" />
           <span className="text-red-400 text-[8px] font-bold tracking-tight">{badgeText || "PDF"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "word":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem trước ${filename}` : "Xem trước tài liệu Word"}
           className={cn(
-            "border-blue-500/25 bg-blue-500/10 text-blue-500 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-blue-500/25 bg-blue-500/10 text-blue-500 hover:border-blue-500/50 hover:bg-blue-500/20",
             className
           )}
         >
           <FileText className="h-4 w-4" />
           <span className="text-blue-400 text-[8px] font-bold tracking-tight">{badgeText || "DOC"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "excel":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem trước ${filename}` : "Xem trước bảng tính Excel/CSV"}
           className={cn(
-            "border-emerald-500/25 bg-emerald-500/10 text-emerald-500 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-emerald-500/25 bg-emerald-500/10 text-emerald-500 hover:border-emerald-500/50 hover:bg-emerald-500/20",
             className
           )}
         >
           <FileSpreadsheet className="h-4 w-4" />
           <span className="text-emerald-400 text-[8px] font-bold tracking-tight">{badgeText || "XLS"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "powerpoint":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem trước ${filename}` : "Xem trước bài trình chiếu"}
           className={cn(
-            "border-orange-500/25 bg-orange-500/10 text-orange-500 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-orange-500/25 bg-orange-500/10 text-orange-500 hover:border-orange-500/50 hover:bg-orange-500/20",
             className
           )}
         >
           <FileText className="h-4 w-4" />
           <span className="text-orange-400 text-[8px] font-bold tracking-tight">{badgeText || "PPT"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "archive":
       return (
-        <div
+        <FileBadge
           className={cn(
-            "border-amber-500/25 bg-amber-500/10 text-amber-500 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-amber-500/25 bg-amber-500/10 text-amber-500",
             className
           )}
         >
           <FileArchive className="h-4 w-4" />
           <span className="text-amber-400 text-[8px] font-bold tracking-tight">{badgeText || "ZIP"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "code":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem trước ${filename}` : "Xem trước mã nguồn"}
           className={cn(
-            "border-indigo-500/25 bg-indigo-500/10 text-indigo-400 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-indigo-500/25 bg-indigo-500/10 text-indigo-400 hover:border-indigo-500/50 hover:bg-indigo-500/20",
             className
           )}
         >
           <FileCode className="h-4 w-4" />
           <span className="text-indigo-400 text-[8px] font-bold tracking-tight">{badgeText || "CODE"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "text":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem trước ${filename}` : "Xem trước văn bản"}
           className={cn(
-            "border-slate-500/25 bg-slate-500/10 text-slate-400 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-slate-500/25 bg-slate-500/10 text-slate-400 hover:border-slate-500/50 hover:bg-slate-500/20",
             className
           )}
         >
           <FileText className="h-4 w-4" />
           <span className="text-slate-400 text-[8px] font-bold tracking-tight">{badgeText || "TXT"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "audio":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Nghe ${filename}` : "Nghe âm thanh"}
           className={cn(
-            "border-violet-500/25 bg-violet-500/10 text-violet-400 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-violet-500/25 bg-violet-500/10 text-violet-400 hover:border-violet-500/50 hover:bg-violet-500/20",
             className
           )}
         >
           <FileAudio className="h-4 w-4" />
           <span className="text-violet-400 text-[8px] font-bold tracking-tight">{badgeText || "AUDIO"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "video":
       return (
-        <div
+        <FileBadge
+          onPreviewClick={onPreviewClick}
+          title={filename ? `Xem video ${filename}` : "Xem video"}
           className={cn(
-            "border-rose-500/25 bg-rose-500/10 text-rose-400 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-rose-500/25 bg-rose-500/10 text-rose-400 hover:border-rose-500/50 hover:bg-rose-500/20",
             className
           )}
         >
           <FileVideo className="h-4 w-4" />
           <span className="text-rose-400 text-[8px] font-bold tracking-tight">{badgeText || "VIDEO"}</span>
-        </div>
+        </FileBadge>
       );
 
     case "executable":
       return (
-        <div
+        <FileBadge
           className={cn(
-            "border-zinc-500/25 bg-zinc-500/10 text-zinc-400 shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border",
+            "border-zinc-500/25 bg-zinc-500/10 text-zinc-400",
             className
           )}
         >
           <FileTerminal className="h-4 w-4" />
           <span className="text-zinc-400 text-[8px] font-bold tracking-tight">{badgeText || "EXE"}</span>
-        </div>
+        </FileBadge>
       );
 
     default:
       return (
-        <div
+        <FileBadge
           className={cn(
-            "shadow-sm relative flex h-8 w-8 shrink-0 flex-col items-center justify-center rounded border border-subtle bg-surface-1 text-secondary",
+            "border border-subtle bg-surface-1 text-secondary",
             className
           )}
         >
           <FileGeneric className="h-4 w-4" />
           <span className="text-[8px] font-bold tracking-tight text-placeholder">{badgeText || "FILE"}</span>
-        </div>
+        </FileBadge>
       );
   }
 }

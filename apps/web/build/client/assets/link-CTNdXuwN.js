@@ -1,0 +1,1 @@
+import{B as e}from"./utils-BR5Vd7sD.js";import{t}from"./jsx-runtime-BBkQMlCM.js";import{t as n}from"./lib-DE7BmX44.js";import{t as r}from"./helper-C6C1ZCJ7.js";e();var i=t();function a({href:e,replace:t,prefetch:a,scroll:o,shallow:s,...c}){return(0,i.jsx)(n,{to:r(e),replace:t,...c})}export{a as t};

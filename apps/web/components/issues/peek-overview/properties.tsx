@@ -4,7 +4,10 @@
  * See the LICENSE file for details.
  */
 
+import { useState } from "react";
 import { observer } from "mobx-react";
+import { ConfirmDialog } from "@plane/blocks/dialog";
+import { setToast } from "@plane/blocks/toast";
 // i18n
 import { useTranslation } from "@plane/i18n";
 // ui icons
@@ -76,8 +79,99 @@ export const PeekOverviewProperties = observer(function PeekOverviewProperties(p
   const maxDate = getDate(issue.target_date);
   maxDate?.setDate(maxDate.getDate());
 
+  const [pendingAssigneeAction, setPendingAssigneeAction] = useState<{
+    ids: string[];
+    type: "add" | "remove";
+    memberNames: string;
+  } | null>(null);
+
+  const handleAssigneeChange = (val: string[]) => {
+    const current = issue?.assignee_ids ?? [];
+    const added = val.filter((id) => !current.includes(id));
+    const removed = current.filter((id) => !val.includes(id));
+
+    if (added.length > 0) {
+      const names = added
+        .map((id) => getUserDetails(id)?.display_name || "member")
+        .join(", ");
+      setPendingAssigneeAction({ ids: val, type: "add", memberNames: names });
+    } else if (removed.length > 0) {
+      const names = removed
+        .map((id) => getUserDetails(id)?.display_name || "member")
+        .join(", ");
+      setPendingAssigneeAction({ ids: val, type: "remove", memberNames: names });
+    }
+  };
+
+  const handleConfirmAssignment = async () => {
+    if (!pendingAssigneeAction) return;
+    const { ids, type, memberNames } = pendingAssigneeAction;
+    try {
+      await issueOperations.update(workspaceSlug, projectId, issueId, { assignee_ids: ids });
+      if (type === "add") {
+        setToast({
+          type: "success",
+          title: "Assignee added",
+          message: `Assigned ${memberNames} and notification sent.`,
+        });
+      } else {
+        setToast({
+          type: "success",
+          title: "Assignee removed",
+          message: `Removed ${memberNames} from work item.`,
+        });
+      }
+    } catch {
+      setToast({
+        type: "error",
+        title: "Error",
+        message: `Failed to ${type === "add" ? "assign" : "remove"} assignee. Please try again.`,
+      });
+    } finally {
+      setPendingAssigneeAction(null);
+    }
+  };
+
   return (
     <div>
+      <ConfirmDialog
+        isOpen={Boolean(pendingAssigneeAction)}
+        handleClose={() => setPendingAssigneeAction(null)}
+        handleSubmit={handleConfirmAssignment}
+        variant={pendingAssigneeAction?.type === "remove" ? "danger" : "primary"}
+        title={
+          pendingAssigneeAction?.type === "remove"
+            ? "Confirm Remove Assignee"
+            : "Confirm Work Item Assignment"
+        }
+        content={
+          <div className="space-y-2 text-13 text-secondary">
+            <p>
+              Are you sure you want to{" "}
+              {pendingAssigneeAction?.type === "remove" ? "remove " : "assign "}
+              <strong className="text-primary font-semibold">
+                {pendingAssigneeAction?.memberNames}
+              </strong>{" "}
+              {pendingAssigneeAction?.type === "remove" ? "from" : "to"} work item{" "}
+              <span className="font-semibold text-primary">
+                {projectDetails?.identifier ? `${projectDetails.identifier}-${issue.sequence_id}` : issue.name}
+              </span>
+              ?
+            </p>
+            {pendingAssigneeAction?.type === "add" && (
+              <p className="text-12 text-tertiary">
+                An email notification will be delivered to their registered email address.
+              </p>
+            )}
+          </div>
+        }
+        primaryButtonText={
+          pendingAssigneeAction?.type === "remove"
+            ? { loading: "Removing...", default: "Remove Assignee" }
+            : { loading: "Assigning...", default: "Assign & Notify" }
+        }
+        secondaryButtonText="Cancel"
+      />
       <h6 className="text-body-xs-medium">{t("common.properties")}</h6>
       <div className={`mt-3 w-full space-y-3 ${disabled ? "opacity-60" : ""}`}>
         <SidebarPropertyListItem icon={StateOutline} label={t("common.state")}>
@@ -96,7 +190,7 @@ export const PeekOverviewProperties = observer(function PeekOverviewProperties(p
           <MemberSelect
             testId="work-item-assignee-select"
             value={issue?.assignee_ids ?? []}
-            onChange={(val) => issueOperations.update(workspaceSlug, projectId, issueId, { assignee_ids: val })}
+            onChange={handleAssigneeChange}
             disabled={disabled}
             projectId={projectId}
             placeholder={t("issue.add.assignee")}

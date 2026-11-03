@@ -1,0 +1,1 @@
+import{B as e,K as t}from"./utils-BR5Vd7sD.js";var n=t(e()),r=()=>{let[e,t]=(0,n.useState)([window.innerWidth,window.innerHeight]);return(0,n.useEffect)(()=>{let e=()=>{t([window.innerWidth,window.innerHeight])};return window.addEventListener(`resize`,e),()=>{window.removeEventListener(`resize`,e)}},[]),e};export{r as t};

@@ -1,0 +1,1 @@
+import{qn as e}from"./dist-B2kuj_3e.js";var t=e(`Circle`,[[`circle`,{cx:`12`,cy:`12`,r:`10`,key:`1mglay`}]]);export{t};
